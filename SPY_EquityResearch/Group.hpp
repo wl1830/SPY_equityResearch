@@ -23,7 +23,7 @@ private:
 public:
     static Index * indexPtr;
     Group(const string & Name):groupName(Name)
-    {}
+    {cout<<" df";}
     
     void addStock(Stock * stockptr){
         StockPtrs.push_back(stockptr);
