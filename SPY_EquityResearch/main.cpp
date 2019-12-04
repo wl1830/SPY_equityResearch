@@ -28,12 +28,12 @@ int main(int argc, const char * argv[]) {
 
         Down under Options check “Use custom working directory” and set it to the directory where you .txt files are located.
         */
-        string epspath ="EPS.csv";
+        string epspath ="EPS_date.csv";
         infile.open(epspath);
         string  ticker, actualEPSstr,estimateEPSstr;
         double actualEPS,estimateEPS;
         string  datetimezero;
-        string  datezero;
+        string  datezero,date_minus_30,date_30;
         string line;
         
         if (!infile.is_open()){
@@ -41,34 +41,42 @@ int main(int argc, const char * argv[]) {
             return 1;
         }
         getline(infile, line);
+        cout<< "Read the following information: ";
         cout << line << endl;
-        double minDatenum = 12.31;
-        double maxDatenum = 1.01;
+        double minDatenum =20191231;
+        double maxDatenum = 20190101;
         vector<Stock*> Stocks;
         vector<double> Surprises;
-        double datenum;
+        
         while (getline(infile,line)){
+            //line 'Ticker', 'Actual', 'Estimate', 'Time','Date','date_minus_30', 'date_30'
             stringstream ss(line);
             getline(ss,ticker,',');
             getline(ss,actualEPSstr,',');
             getline(ss,estimateEPSstr,',');
+            getline(ss,datetimezero,',');
+            getline(ss,datezero,',');
+            getline(ss,date_minus_30,',');
+            getline(ss,date_30,',');
             actualEPS = stod(actualEPSstr);
             estimateEPS = stod(estimateEPSstr);
-            getline(ss,datetimezero,',');
+            double sdatenum,edatenum;
             // change the time format 2019-01-23 06:00:00 to 2019-01-23T06:00:00
             datetimezero = datetimezero.substr(0,10)+"T"+datetimezero.substr(11,8);
-            // Get rid of time, only keep the date
-            datezero = datetimezero.substr(0,10);
-            //update the min max date
-            datenum = stod(datezero.substr(5,2)+"." + datezero.substr(8,9));
-            if(datenum<minDatenum){minDatenum=datenum;}
-            if(datenum>maxDatenum){maxDatenum=datenum;}
             
-            // Give a warning when estimate =0
-            if(estimateEPS==0){cout<<ticker<<" has zero EEPS, its actual EPS is "<<actualEPS<<endl;}
+            //update the min max date
+            sdatenum = (stod(date_minus_30.substr(0,4))*10000) +
+                    (stod(date_minus_30.substr(5,2))*100) +
+                    stod(date_minus_30.substr(8,9));
+            edatenum = (stod(date_30.substr(0,4))*10000) +
+                        (stod(date_30.substr(5,2))*100) +
+                        stod(date_30.substr(8,9));
+            if(sdatenum<minDatenum ){minDatenum=sdatenum;}
+            if(edatenum>maxDatenum ){maxDatenum=edatenum;}
+    
             
             // Create  stock objects
-            Stock * stock= new Stock(ticker,datezero,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
+            Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
             Surprises.push_back(stock->getSurprise());
             Stocks.push_back(stock);
 
@@ -81,7 +89,7 @@ int main(int argc, const char * argv[]) {
     auto const Q2 = 2 * Q1;
     double Thres1 = Surprises[Q1] ;
     double Thres2 = Surprises[Q2] ;
-    cout<<"Lower threshold of surprise:" <<Thres1<<endl;
+    cout<<"\nLower threshold of surprise:" <<Thres1<<endl;
     cout<<"Uper threshold of surprise:" <<Thres2<<endl;
 
     // Create 3 Groups and fill with corresponding stock pointers
@@ -101,18 +109,19 @@ int main(int argc, const char * argv[]) {
         else{ Miss.addStock(*Stocksitr);
         }
     }
-    cout<<"There are "<<Beat.getStockPtr().size()<<" stocks in  the Beat group."<<endl;
-    cout<<"There are "<<Meet.getStockPtr().size()<<" stocks in  the Meet group."<<endl;
-    cout<<"There are "<<Miss.getStockPtr().size()<<" stocks in  the Miss group."<<endl;
+    cout<<"\nThere are "<<Beat.getStockPtr().size()<<" stocks in the Beat group."<<endl;
+    cout<<"There are "<<Meet.getStockPtr().size()<<" stocks in the Meet group."<<endl;
+    cout<<"There are "<<Miss.getStockPtr().size()<<" stocks in the Miss group."<<endl;
     
     
     // Min and Max date of all stocks, used for index to search adjClose
-    string minDate = "2019-0"+to_string(minDatenum).substr(0,1)+"-"+to_string(minDatenum).substr(2,2);
-    string maxDate = "2019-0"+to_string(maxDatenum).substr(0,1)+"-"+to_string(maxDatenum).substr(2,2);
+    string minDate = to_string(minDatenum).substr(0,4)+"-"+to_string(minDatenum).substr(4,2)+"-"+to_string(minDatenum).substr(6,2);
+    string maxDate = to_string(maxDatenum).substr(0,4)+"-"+to_string(maxDatenum).substr(4,2)+"-"+to_string(maxDatenum).substr(6,2);
+    /**/
     
-    cout<< "The earliest release date is "<< minDate<<endl;
-    cout<< "The latest release date is "<< maxDate<<endl;
-
+    cout<< "\nThe earliest day -30 is "<< minDate<<endl;
+    cout<< "The latest day 30 is "<< maxDate<<endl;
+    
     
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);

@@ -37,10 +37,14 @@ private:
     string datetime0; //date+time
     double EPS,EEPS,surprise;
 public:
-    Stock(const string &Ticker_,const string &datezero_,const string &DateTimeZero_,double EPS_,double EEPS_):Equity(Ticker_),EPS(EPS_),EEPS(EEPS_),date0( datezero_),datetime0 (DateTimeZero_)
+    Stock(const string &Ticker_,const string &datezero_,const string &date_minus_30_,const string &date_30_,const string &DateTimeZero_,double EPS_,double EEPS_):Equity(Ticker_),EPS(EPS_),EEPS(EEPS_),date0( datezero_),date_minus_30( date_minus_30_),date_30( date_30_),datetime0 (DateTimeZero_)
     {
 //        cout<<"Default constructor of stock"<<endl;
-        surprise  = (EPS- EEPS)/EEPS;
+        if (EEPS == 0) {surprise  = (EPS- EEPS)/EPS;}
+        else surprise  = (EPS- EEPS)/EEPS;
+//        cout<< EPS<<" " ;
+//        cout<<EEPS<<" ";
+//        cout<<"surprise is "<<surprise<<endl;
     }
     
     void Print(){
@@ -51,10 +55,9 @@ public:
         return surprise;
     }
     
-    string findDate_minus30();
-    string findDate30;
     
-    void SearchPrice();//get more than enough prices
+    
+    void SearchPrice();//get prices
 };
 
 
@@ -68,6 +71,6 @@ public:
         cout<<startdate<<" "<<enddate<<endl;
     }
     
-    void SearchPrice();//get more than enough prices
+    void SearchPrice();//get prices
 };
 #endif /* Stock_hpp */
