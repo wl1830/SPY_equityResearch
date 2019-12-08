@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC0F77C5239C4EDB007B14A5 /* gnuplot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC0F77C4239C4EDB007B14A5 /* gnuplot.cpp */; };
 		DC7DD3FA2395422D00C5284C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC7DD3F92395422D00C5284C /* main.cpp */; };
 		DC7DD4022395505000C5284C /* Stock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC7DD4002395505000C5284C /* Stock.cpp */; };
 		DC7DD4052395505C00C5284C /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC7DD4032395505C00C5284C /* Group.cpp */; };
@@ -25,6 +26,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DC0F77C3239C4EDA007B14A5 /* gnuplot.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = gnuplot.hpp; sourceTree = "<group>"; };
+		DC0F77C4239C4EDB007B14A5 /* gnuplot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gnuplot.cpp; sourceTree = "<group>"; };
 		DC7DD3F62395422D00C5284C /* SPY_EquityResearch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SPY_EquityResearch; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7DD3F92395422D00C5284C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DC7DD4002395505000C5284C /* Stock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stock.cpp; sourceTree = "<group>"; };
@@ -65,6 +68,8 @@
 			children = (
 				DC7DD3F92395422D00C5284C /* main.cpp */,
 				DC7DD4002395505000C5284C /* Stock.cpp */,
+				DC0F77C4239C4EDB007B14A5 /* gnuplot.cpp */,
+				DC0F77C3239C4EDA007B14A5 /* gnuplot.hpp */,
 				DC7DD4012395505000C5284C /* Stock.hpp */,
 				DC7DD4032395505C00C5284C /* Group.cpp */,
 				DC7DD4042395505C00C5284C /* Group.hpp */,
@@ -130,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC7DD4022395505000C5284C /* Stock.cpp in Sources */,
+				DC0F77C5239C4EDB007B14A5 /* gnuplot.cpp in Sources */,
 				DC7DD4052395505C00C5284C /* Group.cpp in Sources */,
 				DC7DD3FA2395422D00C5284C /* main.cpp in Sources */,
 			);

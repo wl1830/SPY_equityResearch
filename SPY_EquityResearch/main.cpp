@@ -5,7 +5,7 @@
 //  Created by 刘唯婷婷 on 12/2/19.
 //  Copyright © 2019 NYU. All rights reserved.
 //
-
+#include <math.h>
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
@@ -14,18 +14,22 @@
 #include <vector>
 #include "Stock.hpp"
 #include "Group.hpp"
+#include <cstring>
 #include <algorithm> //for std::sort
+#include "gnuplot.hpp"
 using namespace std;
 
 //initialize the static variable indexitr
 Index * Group::indexPtr = nullptr;
+
 int main(int argc, const char * argv[]) {
+    
     // insert code here...
     // Read in ticker, time, EPS and EEPS
-    ifstream infile;
+
+        ifstream infile;
        /*
         If  cannt read, In Xcode go to Product > Scheme > Edit Scheme > Run test (on the right) > Options (middle top)
-
         Down under Options check “Use custom working directory” and set it to the directory where you .txt files are located.
         */
         string epspath ="EPS_date.csv";
@@ -79,7 +83,6 @@ int main(int argc, const char * argv[]) {
             Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
             Surprises.push_back(stock->getSurprise());
             Stocks.push_back(stock);
-
         }
     infile.close();
     
@@ -126,7 +129,7 @@ int main(int argc, const char * argv[]) {
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
     
-    
+    cout<<Beat.indexPtr->getTicker();
     // Bootstrap stocks
     // For each stock, seach or enough prices, find date-30, date 30
     // Yahoo get prices for sampled stocks
@@ -134,6 +137,35 @@ int main(int argc, const char * argv[]) {
     // Calculations
     // Populate the stock maps and AAR/CAAR matrix
     // Plot
+    int i = 0;
+    int nIntervals = 60;
+    double intervalSize = 60.;
+    double stepSize = intervalSize/nIntervals;
+    double* xData = (double*) malloc((nIntervals+1)*sizeof(double));
+    double* yData = (double*) malloc((nIntervals+1)*sizeof(double));
+    double* yData2 = (double*) malloc((nIntervals+1)*sizeof(double));
+    double* yData3 = (double*) malloc((nIntervals+1)*sizeof(double));
+    xData[0] = 0.0;
+    double x0 = 0.0;
+    for (i = 0; i < nIntervals; i++) {
+        x0 = xData[i];
+        xData[i+1] = x0 + stepSize;
+    }
+    for (i = 0; i <= nIntervals; i++) {
+        x0 = xData[i];
+        yData[i] = sin(x0)*cos(10*x0);
+    }
+    for (i = 0; i <= nIntervals; i++) {
+        x0 = xData[i];
+        yData2[i] = sin(x0)*cos(5*x0);
+    }
+    for (i = 0; i <= nIntervals; i++) {
+           x0 = xData[i];
+           yData3[i] = sin(x0)*cos(x0);
+       }
+    
+    plotResults(xData, yData, yData2, yData3, nIntervals);
+    
     // Menu
     // Delete stocks and spy
         }
