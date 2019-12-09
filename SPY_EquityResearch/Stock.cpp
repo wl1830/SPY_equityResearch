@@ -219,10 +219,23 @@ void Stock::SearchPrice(){
                 sData.str(data.memory);
                 string line;
                 getline(sData, line);
-                cout << line << endl;
-                for (; getline(sData, line); )
-                    cout << line << endl;
-    
+//                cout << line << endl;
+                string date,tempstring,adjClosestr;
+                double  adjClose;
+                while ( getline(sData, line) ){
+//                    cout << line << endl;
+                //Date,Open,High,Low,Close,Adj Close,Volume
+                stringstream ss(line);
+                getline(ss,date,',');
+                getline(ss,tempstring,','); //open
+                getline(ss,tempstring,',');//high
+                getline(ss,tempstring,',');//low
+                getline(ss,tempstring,',');//close
+                getline(ss,adjClosestr,',');//adjclose
+                adjClose = stold(adjClosestr); //string to long double
+                getline(ss,tempstring,',');//volume
+                cout<<date<<" "<<adjClose<<endl;
+                }
                 itr++;
             }
             free(data.memory);
@@ -387,9 +400,23 @@ void Index::SearchPrice(){
                 string line;
                 getline(sData, line);
                 cout << line << endl;
-                for (; getline(sData, line); )
-                    cout << line << endl;
-    
+                string date,tempstring,adjClosestr;
+                double  adjClose;
+                while ( getline(sData, line) ){
+//                    cout << line << endl;//
+                //Date,Open,High,Low,Close,Adj Close,Volume
+                stringstream ss(line);
+                getline(ss,date,',');
+                getline(ss,tempstring,','); //open
+                getline(ss,tempstring,',');//high
+                getline(ss,tempstring,',');//low
+                getline(ss,tempstring,',');//close
+                getline(ss,adjClosestr,',');//adjclose
+                adjClose = stold(adjClosestr); //string to long double
+                getline(ss,tempstring,',');//volume
+                
+                cout<<date<<" "<<adjClose<<endl;
+                }
                 itr++;
             }
             free(data.memory);
