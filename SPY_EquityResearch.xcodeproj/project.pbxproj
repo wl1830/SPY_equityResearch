@@ -250,7 +250,11 @@
 		DC7DD3FE2395422D00C5284C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/lib/;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				"OTHER_LDFLAGS[arch=*]" = "-lcurl";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -258,7 +262,10 @@
 		DC7DD3FF2395422D00C5284C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/lib/;
+				"OTHER_LDFLAGS[arch=*]" = "-lcurl";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
