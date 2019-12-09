@@ -133,6 +133,7 @@ int main(int argc, const char * argv[]) {
     // Bootstrap stocks
     // For each stock, seach or enough prices, find date-30, date 30
     // Yahoo get prices for sampled stocks
+        Stocks[100]->SearchPrice();
     // Yahoo get prices for index
     // Calculations
     // Populate the stock maps and AAR/CAAR matrix
