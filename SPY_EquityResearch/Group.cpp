@@ -18,9 +18,10 @@ void Group::BootStrap(int n){
         for(itr=StockPtrs.begin();itr!=StockPtrs.end();itr++){
             SampleStockPtrs.push_back(*itr);
         count++;
-            if(count==30){
+            if(count==n){
                 break;
             }
         }
+    cout<<"Bootstrapped the stocks"<<endl;
     cout<<"The size of sampleStockPtrs vector: "<<SampleStockPtrs.size()<<endl;
 }
