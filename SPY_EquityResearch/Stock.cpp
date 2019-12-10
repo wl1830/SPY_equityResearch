@@ -15,8 +15,42 @@
 #include <locale>
 #include <iomanip>
 #include "curl/curl.h"
-
+#include "VectorCalculation.hpp"
 using namespace std;
+
+
+void Equity::CalReturn(){
+    map<string,double> ::iterator itr;
+    for(itr=++priceMap.begin();itr!=priceMap.end();itr++){
+        
+        double lastPrice = (--itr->second);
+        double todayPrice = ++itr->second;
+        returnMap[itr->first] = (todayPrice-lastPrice)/lastPrice;
+    }
+   cout<<"Return calculated"<<"\n There are "<<returnMap.size()<<" days"<<endl;
+    cout<<"First day "<<returnMap.begin()->first;
+    cout<<"Last day "<<(--returnMap.end())->first;
+}
+
+
+vector<double> Index::GetReturnVec(string date1,string date2){
+    vector<double> returns;
+    map<string,double> ::iterator itr;
+    for(itr=returnMap.find(date1);itr!=++returnMap.find(date2);itr++){
+        returns.push_back(itr->second);
+    }
+    if(returns.size()!=60){cout<<"There are"<<returns.size()<<" returns"<<endl;}
+    return returns;
+}
+vector<double> Stock::GetReturnVec(){
+    vector<double> returns;
+    map<string,double> ::iterator itr;
+    for(itr=returnMap.begin();itr!=returnMap.end();itr++){
+        returns.push_back(itr->second);
+    }
+    if(returns.size()!=60){cout<<"There are"<<returns.size()<<" returns"<<endl;}
+    return returns;
+}
 
 size_t write_data(void *ptr, int size, int nmemb, FILE *stream)
 {
@@ -63,7 +97,7 @@ string getTimeinSeconds(string Time)
     memset(time, 0, 100);
     if (ssTime >> std::get_time(&t, "%Y-%m-%dT"))
     {
-        cout << std::put_time(&t, "%c %Z") << "\n"   << std::mktime(&t) << "\n";
+//        cout << std::put_time(&t, "%c %Z") << "\n"   << std::mktime(&t) << "\n";
                
         sprintf (time, "%ld", mktime(&t));
         return string(time);
@@ -77,7 +111,7 @@ string getTimeinSeconds(string Time)
 
 void Stock::SearchPrice(){
 
-    string startTime = getTimeinSeconds(date_minus_30);
+        string startTime = getTimeinSeconds(date_minus_30);
     
         string endTime = getTimeinSeconds(date_30);
         vector<string> symbolList;
@@ -234,10 +268,9 @@ void Stock::SearchPrice(){
                 getline(ss,adjClosestr,',');//adjclose
                 adjClose = stold(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
-                cout<<date<<" "<<adjClose<<endl;
-                priceMap.insert(pair<string,double>(date,adjClose));
+                
                 priceMap[date] = adjClose;
-                    cout<<priceMap[date];
+//                    cout<<priceMap[date];
                     
                 
                     
@@ -406,7 +439,7 @@ void Index::SearchPrice(){
                 sData.str(data.memory);
                 string line;
                 getline(sData, line);
-                cout << line << endl;
+//                cout << line << endl;
                 string date,tempstring,adjClosestr;
                 double  adjClose;
                 while ( getline(sData, line) ){
@@ -422,7 +455,7 @@ void Index::SearchPrice(){
                 adjClose = stold(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
                 
-                //cout<<date<<" "<<adjClose<<endl;
+//                cout<<date<<" "<<adjClose<<endl;
                 priceMap[date] = adjClose;
                 }
                 itr++;

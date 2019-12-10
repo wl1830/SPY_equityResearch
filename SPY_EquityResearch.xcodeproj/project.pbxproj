@@ -11,6 +11,7 @@
 		DC7DD3FA2395422D00C5284C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC7DD3F92395422D00C5284C /* main.cpp */; };
 		DC7DD4022395505000C5284C /* Stock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC7DD4002395505000C5284C /* Stock.cpp */; };
 		DC7DD4052395505C00C5284C /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC7DD4032395505C00C5284C /* Group.cpp */; };
+		DCADDAC123A02C72007A9C5C /* VectorCalculation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCADDABF23A02C72007A9C5C /* VectorCalculation.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		DC7DD4012395505000C5284C /* Stock.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Stock.hpp; sourceTree = "<group>"; };
 		DC7DD4032395505C00C5284C /* Group.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Group.cpp; sourceTree = "<group>"; };
 		DC7DD4042395505C00C5284C /* Group.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Group.hpp; sourceTree = "<group>"; };
+		DCADDABF23A02C72007A9C5C /* VectorCalculation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VectorCalculation.cpp; sourceTree = "<group>"; };
+		DCADDAC023A02C72007A9C5C /* VectorCalculation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = VectorCalculation.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,8 @@
 				DC0F77C4239C4EDB007B14A5 /* gnuplot.cpp */,
 				DC0F77C3239C4EDA007B14A5 /* gnuplot.hpp */,
 				DC7DD4012395505000C5284C /* Stock.hpp */,
+				DCADDABF23A02C72007A9C5C /* VectorCalculation.cpp */,
+				DCADDAC023A02C72007A9C5C /* VectorCalculation.hpp */,
 				DC7DD4032395505C00C5284C /* Group.cpp */,
 				DC7DD4042395505C00C5284C /* Group.hpp */,
 			);
@@ -138,6 +143,7 @@
 				DC0F77C5239C4EDB007B14A5 /* gnuplot.cpp in Sources */,
 				DC7DD4052395505C00C5284C /* Group.cpp in Sources */,
 				DC7DD3FA2395422D00C5284C /* main.cpp in Sources */,
+				DCADDAC123A02C72007A9C5C /* VectorCalculation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

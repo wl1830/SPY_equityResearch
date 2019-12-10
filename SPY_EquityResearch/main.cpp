@@ -17,6 +17,7 @@
 #include <cstring>
 #include <algorithm> //for std::sort
 #include "gnuplot.hpp"
+
 using namespace std;
 
 //initialize the static variable indexitr
@@ -99,6 +100,7 @@ int main(int argc, const char * argv[]) {
     Group Beat("Beat");
     Group Meet("Meet");
     Group Miss("Miss");
+    
     // store the stock pointers into the Group objects according to surprise value
     vector<Stock*>::iterator Stocksitr;
     for(Stocksitr=Stocks.begin();Stocksitr!=Stocks.end();Stocksitr++)
@@ -129,14 +131,37 @@ int main(int argc, const char * argv[]) {
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
    
-    cout<<Beat.indexPtr->getTicker();
+    
     
     // Bootstrap stocks
-    Beat.BootStrap();
+//    Beat.BootStrap();
+//    Meet.BootStrap();
+//    Miss.BootStrap();
     // For each stock, seach or enough prices, find date-30, date 30
     // Yahoo get prices for sampled stocks
-        Stocks[100]->SearchPrice();
-//    /
+    Group::IndexSearch_CalReturn();
+    int n = 377;
+    cout<<Stocks[n]->getTicker()<<endl;
+    Stocks[n]->SearchPrice();
+    cout<<"Pricemap size:"<<Stocks[n]->GetPriceMap().size()<<endl;
+    Stocks[n]->CalReturn();
+    
+    
+    for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
+        cout<<(*Stocksitr)->getTicker()<<endl;
+        (*Stocksitr)->SearchPrice();
+        (*Stocksitr)->CalReturn();
+        cout<<(*Stocksitr)->GetReturnBeginDate()<<endl;
+        cout<<(*Stocksitr)->GetReturnEndDate()<<endl;
+        vector<double> partReturns =Group::indexPtr->GetReturnVec((*Stocksitr)->GetReturnBeginDate(), (*Stocksitr)->GetReturnEndDate());
+    }
+        
+//    
+//
+ cout<<Stocks[n]->GetReturnBeginDate()<<" "<<Stocks[n]->GetReturnEndDate();
+    vector<double> partReturns =Group::indexPtr->GetReturnVec("2018-12-10",
+    "2019-03-07");
+    
 //    map<string,double>::iteratr it;
 //    for(it= Stocks[100]->GetPriceMap().begin();it!=Stocks[100]->GetPriceMap().end();it++){
 //        cout<<it->first<<endl;

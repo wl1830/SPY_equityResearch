@@ -18,6 +18,7 @@ private:
     string ticker;
 protected:
     map<string,double>priceMap;
+    map<string,double>returnMap;
 public:
     Equity(const string &Ticker){
         ticker  = Ticker;
@@ -30,6 +31,7 @@ public:
         
     }
     void SearchPrice();
+    void CalReturn();
 };
 
 class Stock:public Equity{
@@ -37,7 +39,16 @@ private:
     string date0,date_minus_30,date_30; //only date
     string datetime0; //date+time
     double EPS,EEPS,surprise;
+    
 public:
+    string GetReturnBeginDate(){
+        map<string,double>::iterator itr;
+        return returnMap.begin()->first;
+    }
+    string GetReturnEndDate(){
+        return date_30;
+    }
+    
     Stock(const string &Ticker_,const string &datezero_,const string &date_minus_30_,const string &date_30_,const string &DateTimeZero_,double EPS_,double EEPS_):Equity(Ticker_),EPS(EPS_),EEPS(EEPS_),date0( datezero_),date_minus_30( date_minus_30_),date_30( date_30_),datetime0 (DateTimeZero_)
     {
 //        cout<<"Default constructor of stock"<<endl;
@@ -47,7 +58,7 @@ public:
 //        cout<<EEPS<<" ";
 //        cout<<"surprise is "<<surprise<<endl;
     }
-    
+    vector<double> GetReturnVec();
     void Print(){
         cout<<getTicker()<< " "<< date0<<" "<< EPS<<" "<<EEPS<<endl;
         cout<<surprise<<endl;
@@ -71,7 +82,8 @@ public:
     void Print(){
         cout<<startdate<<" "<<enddate<<endl;
     }
-    
+    vector<double> GetReturnVec(string date1,string date2);
     void SearchPrice();//get prices
+   
 };
 #endif /* Stock_hpp */
