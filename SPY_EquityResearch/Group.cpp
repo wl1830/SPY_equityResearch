@@ -8,3 +8,19 @@
 
 #include "Group.hpp"
 
+void Group::BootStrap(int n){
+    srand(time(NULL));
+    auto rng = default_random_engine {};
+    std::shuffle(begin(StockPtrs), end(StockPtrs), rng);
+    vector<Stock*>::iterator itr;
+    int count=0;
+    
+        for(itr=StockPtrs.begin();itr!=StockPtrs.end();itr++){
+            SampleStockPtrs.push_back(*itr);
+        count++;
+            if(count==30){
+                break;
+            }
+        }
+    cout<<"The size of sampleStockPtrs vector: "<<SampleStockPtrs.size()<<endl;
+}

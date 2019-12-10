@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <vector>
 #include "Stock.hpp"
+#include <algorithm>
+#include <random>
+#include  <vector>
 using namespace std;
 typedef vector<vector<double>> Matrix;
 class Group{
@@ -21,6 +24,7 @@ private:
     vector<Stock*> SampleStockPtrs;
     
 public:
+    
     static Index * indexPtr;
     Group(const string & Name):groupName(Name)
     {cout<<" df";}

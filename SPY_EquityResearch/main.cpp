@@ -128,12 +128,20 @@ int main(int argc, const char * argv[]) {
     
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
-    
+   
     cout<<Beat.indexPtr->getTicker();
+    
     // Bootstrap stocks
+    Beat.BootStrap();
     // For each stock, seach or enough prices, find date-30, date 30
     // Yahoo get prices for sampled stocks
         Stocks[100]->SearchPrice();
+//    /
+//    map<string,double>::iteratr it;
+//    for(it= Stocks[100]->GetPriceMap().begin();it!=Stocks[100]->GetPriceMap().end();it++){
+//        cout<<it->first<<endl;
+//        cout<<it->second<<endl;
+//    }
     
     // Yahoo get prices for index
     // Calculations

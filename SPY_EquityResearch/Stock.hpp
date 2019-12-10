@@ -16,6 +16,7 @@ using namespace std;
 class Equity{
 private:
     string ticker;
+protected:
     map<string,double>priceMap;
 public:
     Equity(const string &Ticker){

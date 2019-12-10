@@ -235,6 +235,13 @@ void Stock::SearchPrice(){
                 adjClose = stold(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
                 cout<<date<<" "<<adjClose<<endl;
+                priceMap.insert(pair<string,double>(date,adjClose));
+                priceMap[date] = adjClose;
+                    cout<<priceMap[date];
+                    
+                
+                    
+                
                 }
                 itr++;
             }
@@ -415,7 +422,8 @@ void Index::SearchPrice(){
                 adjClose = stold(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
                 
-                cout<<date<<" "<<adjClose<<endl;
+                //cout<<date<<" "<<adjClose<<endl;
+                priceMap[date] = adjClose;
                 }
                 itr++;
             }
