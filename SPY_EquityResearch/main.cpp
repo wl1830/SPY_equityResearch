@@ -131,30 +131,35 @@ int main(int argc, const char * argv[]) {
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
    
-    
+    // Calculation
+    // Search price Caculate return for all dates;
+    Group::IndexSearch_CalReturn();
+    // Caculate all;
+    Beat.Bootstap_Calculate_All();
+    Meet.Bootstap_Calculate_All();
+    Miss.Bootstap_Calculate_All();
+    vector<double> BeACAR = Beat
     
     // Bootstrap stocks
-//    Beat.BootStrap();
-//    Meet.BootStrap();
-//    Miss.BootStrap();
+
     // For each stock, seach or enough prices, find date-30, date 30
     // Yahoo get prices for sampled stocks
-    Group::IndexSearch_CalReturn();
-    int n = 377;
-    cout<<Stocks[n]->getTicker()<<endl;
-    Stocks[n]->SearchPrice();
-    cout<<"Pricemap size:"<<Stocks[n]->GetPriceMap().size()<<endl;
-    Stocks[n]->CalReturn();
+    
+//    int n = 377;
+//    cout<<Stocks[n]->getTicker()<<endl;
+//    Stocks[n]->SearchPrice();
+//    cout<<"Pricemap size:"<<Stocks[n]->GetPriceMap().size()<<endl;
+//    Stocks[n]->CalReturn();
     
     
-    for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
-        cout<<(*Stocksitr)->getTicker()<<endl;
-        (*Stocksitr)->SearchPrice();
-        (*Stocksitr)->CalReturn();
-        cout<<(*Stocksitr)->GetReturnBeginDate()<<endl;
-        cout<<(*Stocksitr)->GetReturnEndDate()<<endl;
-        vector<double> partReturns =Group::indexPtr->GetReturnVec((*Stocksitr)->GetReturnBeginDate(), (*Stocksitr)->GetReturnEndDate());
-    }
+//    for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
+//        cout<<(*Stocksitr)->getTicker()<<endl;
+//        (*Stocksitr)->SearchPrice();
+//        (*Stocksitr)->CalReturn();
+//        cout<<(*Stocksitr)->GetReturnBeginDate()<<endl;
+//        cout<<(*Stocksitr)->GetReturnEndDate()<<endl;
+//        vector<double> partReturns =Group::indexPtr->GetReturnVec((*Stocksitr)->GetReturnBeginDate(), (*Stocksitr)->GetReturnEndDate());
+//    }
         
 //    
 //
