@@ -32,12 +32,15 @@ void Equity::CalReturn(){
 }
 
 
-vector<double> Index::GetReturnVec(string date1,string date2){
+vector<double> Index::GetReturnVec(string date1,string date2)const{
     vector<double> returns;
-    map<string,double> ::iterator itr;
+    map<string,double> ::const_iterator itr;
+    
+    
     for(itr=returnMap.find(date1);itr!=++returnMap.find(date2);itr++){
         returns.push_back(itr->second);
     }
+    
     if(returns.size()!=60){
         cout<<"In the Index::GetReturnVec(string date1,string date2)"<<" Twodates are "<<date1<<" "<<date2<<endl;
         cout<<"There are "<<returns.size()<<" returns for index"<<endl;}
@@ -47,6 +50,7 @@ vector<double> Index::GetReturnVec(string date1,string date2){
     return returns;
 }
 vector<double> Stock::GetReturnVec(){
+    
     vector<double> returns;
     map<string,double> ::iterator itr;
     for(itr=returnMap.begin();itr!=returnMap.end();itr++){

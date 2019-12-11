@@ -26,7 +26,7 @@ public:
     map<string,double> GetPriceMap()const{
         return priceMap;
     }
-    string getTicker()const{
+    string getTicker() const{
         return ticker;
         
     }
@@ -41,11 +41,11 @@ private:
     double EPS,EEPS,surprise;
     
 public:
-    string GetReturnBeginDate(){
+    string GetReturnBeginDate()const{
         map<string,double>::iterator itr;
         return returnMap.begin()->first;
     }
-    string GetReturnEndDate(){
+    string GetReturnEndDate()const{
         return date_30;
     }
     
@@ -56,7 +56,7 @@ public:
         else surprise  = (EPS- EEPS)/EEPS;
 
     }
-    vector<double> GetReturnVec();
+    vector<double> GetReturnVec ();
     void Print(){
         cout<<getTicker()<< " "<< date0<<" "<< EPS<<" "<<EEPS<<endl;
         cout<<surprise<<endl;
@@ -66,6 +66,23 @@ public:
     }
     
     
+    string getDate_minus_30()const{
+        
+       return date_minus_30;
+   }
+    string getDetdate_30()const{
+        return date_30;
+    }
+    string getDatezero()const{
+        return date0;
+    }
+    double getEstimateEPS()const{
+        return EEPS;
+    }
+    double getActualEPS()const{
+        return EPS;
+    }
+ 
     
     void SearchPrice();//get prices
 };
@@ -80,7 +97,7 @@ public:
     void Print(){
         cout<<startdate<<" "<<enddate<<endl;
     }
-    vector<double> GetReturnVec(string date1,string date2);
+    vector<double> GetReturnVec(string date1,string date2)const;
     void SearchPrice();//get prices
    
 };

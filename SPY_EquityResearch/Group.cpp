@@ -22,7 +22,8 @@ void Group::BootStrap(int n){
                 break;
             }
         }
-    cout<<"\nThe sampled stocks are"<<endl;
+    cout<<"\nGroup "<<groupName<<" bootstrap: "<<endl;
+    cout<<"The sampled stocks in are"<<endl;
     for(itr=SampleStockPtrs.begin();itr!=SampleStockPtrs.end();itr++){
         cout<<(*itr)->getTicker()<<" ";
     }

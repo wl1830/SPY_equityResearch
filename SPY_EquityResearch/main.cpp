@@ -23,6 +23,20 @@ using namespace std;
 //initialize the static variable indexitr
 Index * Group::indexPtr = nullptr;
 
+void PrintVecotr(vector<double> v){
+    for(int i=0;i<v.size();i++){
+        cout<<v[i]<<"\t";
+    }
+    cout<<endl;
+}
+void PrintMap(map<string, double> m){
+    
+    for(map<string, double>::iterator i=m.begin();i!=m.end();i++){
+        cout<<i->first<<"\t"<<i->second<<endl;
+    }
+    cout<<endl;
+}
+
 int main(int argc, const char * argv[]) {
     
     // insert code here...
@@ -51,6 +65,7 @@ int main(int argc, const char * argv[]) {
         double minDatenum =20191231;
         double maxDatenum = 20190101;
         vector<Stock*> Stocks;
+        map<string,Stock*> pool;
         vector<double> Surprises;
         
         while (getline(infile,line)){
@@ -84,7 +99,9 @@ int main(int argc, const char * argv[]) {
             Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
             Surprises.push_back(stock->getSurprise());
             Stocks.push_back(stock);
+            pool[ticker] =stock;
         }
+
     infile.close();
     
     // Find the 2 threshold of Surprise to group stocks
@@ -93,6 +110,7 @@ int main(int argc, const char * argv[]) {
     auto const Q2 = 2 * Q1;
     double Thres1 = Surprises[Q1] ;
     double Thres2 = Surprises[Q2] ;
+    cout<<"\nData from bloomberg passed in.\n";
     cout<<"\nLower threshold of surprise:" <<Thres1<<endl;
     cout<<"Uper threshold of surprise:" <<Thres2<<endl;
 
@@ -134,33 +152,205 @@ int main(int argc, const char * argv[]) {
     
 //    
     Group::IndexSearch_CalReturn();
-    // Caculate all;
-    Beat.Bootstap_Calculate_All();
-    Meet.Bootstap_Calculate_All();
-    Miss.Bootstap_Calculate_All();
+//    // Caculate all;
+   
 //
-    vector<double> BeatACAR = Beat.getACAR();
-    vector<double> MeetACAR = Meet.getACAR();
-    vector<double> MissACAR = Miss.getACAR();
+//    for(map<string,Stock*>::iterator it = pool.begin(); it != pool.end(); it++) {
 //
-    cout<<"Calculation for three groups done!"<<endl;
-    if(BeatACAR.size()!=60|MeetACAR.size()!=60|MissACAR.size()!=60){
-        cout<<"Dimension of  metrics have problem";
-    }else{cout<<"Metrics checked!"<<endl;}
+//       cout << it->first << "\n";
+//     }
+//    cout<<"\n\nPlot outside menu test\n";
+//    cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
+//    Beat.Bootstap_Calculate_All();
+//    Meet.Bootstap_Calculate_All();
+//    Miss.Bootstap_Calculate_All();
+//
+//        cout<<"\nCalculation for three groups done!\n"<<endl;
+
+//    Plot(Beat.getACAR(),Meet.getACAR(),Miss.getACAR());
 
     //
+    //    // Menu
+
+        cout << endl << endl << "--------------------------------menu--------------------------------" << endl << endl
+        << "Please press 1 to pull information for one stock from one group."  << endl
+        <<"Please press 2 to retrieve historical price and calculate for bootstrapped stocks for all groups." << endl
+        << "Please press 3(after 2) to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
+        << "Please press 4(after 2) to show the Excel graph with CAAR for all 3 groups." << endl
+        << "Please press 5 to exit the program." << endl << endl;
+        
+        while (true)
+        {
+            char c;
+            cout<<"select an option:";
+            c = getchar();
+            if (c == '2')
+            {
+                
+                cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
+                Beat.Bootstap_Calculate_All();
+                Meet.Bootstap_Calculate_All();
+                Miss.Bootstap_Calculate_All();
+
+                    cout<<"\nCalculation for three groups done!\n"<<endl;
+                
+                    }
+            else if (c == '1')
+                
+            {
+                string ticker;
+                cout<<"Please enter the stock symbol:"<<endl;
+                cin>>ticker;
+            
+//                   // Not a stock
+                    if ( pool.find(ticker) == pool.end() ){
+                        //check if it is a index
+                        if(ticker=="SPY"){
+                            cout<<endl<<"Date\tAdjClose:"<<endl;
+                            PrintMap(Group::indexPtr->GetPriceMap());
+                        }
+                        else{cout<< endl<<"Stock not included."<<endl;}
+                        }
+                    else { //Normal stock
+                        Stock* stkptr = pool[ticker];
+                        cout<<"Ticker:"<<stkptr->getTicker()<<endl;
+                        cout<<"Start day:"<<stkptr->getDate_minus_30()<<endl;
+                        cout<<"End day:"<<stkptr->getDetdate_30()<<endl;
+                        cout<<"Announcement date:"<<stkptr->getDatezero()<<endl;
+                        cout<<"Stock Estimated EPS"<<stkptr->getEstimateEPS()<<endl;
+                        cout<<"Stock actual EPS:"<<stkptr->getActualEPS()<<endl;
+                        cout<<"Surprise:"<<stkptr->getSurprise()<<endl;
+    //                    map<string,double>price = priceMap(ticker);
+                        cout<<endl<<"Date\tAdjClose:"<<endl;
+    //                    for (map<string,double>::SearchPrice()) cout<<itr->first<<" "<<itr->second <<endl;
+                        // Search and print prices
+                        stkptr->SearchPrice();
+                        PrintMap(stkptr->GetPriceMap());
+                        }
+                
+                
+            }
+            else if(c == '3' ){
+                string dataType;
+                
+                cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
+                cin>> dataType;
+                if (dataType !="AAR" && dataType != "CAAR"&& dataType !="AARstd" && dataType != "CAARstd") cout<<endl<<"Wrong Type."<<endl;
+                 int metricType;
+                if(dataType =="AAR"){ metricType = 0;}
+                else if(dataType !="AARstd"){ metricType = 1;}
+                else if(dataType !="CAARstd"){ metricType = 2;}
+                    else { metricType = 3;}
+                    
+                
+                string groupName;
+                cout<<"Please enter the group name (Beat, Meet, Miss):"<<endl;
+                cin>>groupName;
+                
+                if (groupName != "Beat" && groupName != "Meet" && groupName != "Miss") cout<<endl<<"Wrong name."<<endl;
+               
+                int group;
+                if (groupName == "Beat") group = 0;
+                else if (groupName == "Meet") group = 1;
+                else group = 2;
+                    cout<<endl<<"The"<<dataType<<" of group"<<groupName<<" is:"<<endl;
+
+                // 调出每组AAR或CAAR  for (Bootstrap_Calculate_All())<<","<< cout<<CalAAR()<<" "<<CalCAAR()<<endl;
+                switch (group) {
+                    case 0: //Beat
+                        switch (metricType) {
+                            case 0: //AAR
+                                PrintVecotr(Beat.getAAR());
+                                break;
+                            case 1:  //CAAR
+                            PrintVecotr(Beat.getACAR());
+                            break;
+                            case 2: //AARstd
+                            PrintVecotr(Beat.getstdAR());
+                            break;
+                            case 3: //CAARstd
+                            PrintVecotr(Beat.getstdCAR());
+                            break;
+                            default:
+                                break;
+                        }
+                        break;
+                        case 1: //Meet
+                            switch (metricType) {
+                                case 0: //AAR
+                                    PrintVecotr(Meet.getAAR());
+                                    break;
+                                case 1://CAAR
+                                PrintVecotr(Meet.getACAR());
+                                break;
+                                case 2://AARstd
+                                PrintVecotr(Meet.getstdAR());
+                                break;
+                                case 3://CAARstd
+                                PrintVecotr(Meet.getstdCAR());
+                                break;
+                                default:
+                                    break;
+                            }
+                            break;
+                    case 2: //Miss
+                        switch (metricType) {
+                            case 0:  //AAR
+                                PrintVecotr(Miss.getAAR());
+                                break;
+                            case 1://CAAR
+                            PrintVecotr(Miss.getACAR());
+                            break;
+                            case 2://AARstd
+                            PrintVecotr(Miss.getstdAR());
+                            break;
+                            case 3://CAARstd
+                            PrintVecotr(Miss.getstdCAR());
+                            break;
+                            default:
+                                break;
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+           
+            }
+            
+            else if(c == '4') {
+                //gnuplot: CAAR 在最后的matrix里的调出
+                vector<double> v1 = Beat.getACAR();
+                vector<double> v2 = Meet.getACAR();
+                vector<double> v3 = Miss.getACAR();
+                Plot(v1, v2,v3);
+                
+            }
+            
+            else if(c == '5') {
+                
+                break;}
+            
+            
+    }
+            
+
+
     
+    Plot(Beat.getACAR(),Meet.getACAR(),Miss.getACAR());
     
-    Plot(BeatACAR, MeetACAR, MissACAR);
     for(Stock* stk_ptr:Stocks){
         delete stk_ptr;
     }
-    Stocks.clear();
-    delete Group::indexPtr;
-    Group::indexPtr = NULL;
-//
-//    // Menu
+    
+   Stocks.clear();
+   delete Group::indexPtr;
+   Group::indexPtr = NULL;
+
     
     // Delete stocks and spy
+    
+    
+    
         }
 

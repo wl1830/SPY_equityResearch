@@ -63,7 +63,6 @@ void Plot(vector<double> v1,vector<double> v2,vector<double> v3,int nIntervals ,
     double* yData2 = (double*) malloc((nIntervals+1)*sizeof(double));
     double* yData3 = (double*) malloc((nIntervals+1)*sizeof(double));
     xData[0] = 1.0;
-    x0 = 1.0;
     for (i = 0; i < nIntervals; i++) {
         x0 = xData[i];
         xData[i+1] = x0 + stepSize;
