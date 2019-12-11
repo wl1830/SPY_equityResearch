@@ -27,9 +27,9 @@ void Equity::CalReturn(){
         double todayPrice = ++itr->second;
         returnMap[itr->first] = (todayPrice-lastPrice)/lastPrice;
     }
-   cout<<"Return calculated"<<"\n There are "<<returnMap.size()<<" days"<<endl;
-    cout<<"First day "<<returnMap.begin()->first;
-    cout<<"Last day "<<(--returnMap.end())->first;
+    cout<<"Return of "<<ticker <<" calculated"<<endl;
+    if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
+
 }
 
 
@@ -39,7 +39,12 @@ vector<double> Index::GetReturnVec(string date1,string date2){
     for(itr=returnMap.find(date1);itr!=++returnMap.find(date2);itr++){
         returns.push_back(itr->second);
     }
-    if(returns.size()!=60){cout<<"There are"<<returns.size()<<" returns"<<endl;}
+    if(returns.size()!=60){
+        cout<<"In the Index::GetReturnVec(string date1,string date2)"<<" Twodates are "<<date1<<" "<<date2<<endl;
+        cout<<"There are "<<returns.size()<<" returns for index"<<endl;}
+//    else{cout<<"60 days for index";
+//
+//    }
     return returns;
 }
 vector<double> Stock::GetReturnVec(){

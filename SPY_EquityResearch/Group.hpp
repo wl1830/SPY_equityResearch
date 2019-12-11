@@ -67,6 +67,9 @@ public:
     void  CalARstd();//60*1
     void CalCARstd();//60*1
     void Bootstap_Calculate_All();//Return [AAR,CAAR,AARstd,CAARstd], each element is a  60*1 vector
-    
+    vector<double> getAAR(){return AAR;}
+    vector<double> getACAR(){return ACAR;}
+    vector<double> getstdAR(){return stdAR;}
+    vector<double> getstdCAR(){return stdCAR;}
 };
 #endif /* Group_hpp */

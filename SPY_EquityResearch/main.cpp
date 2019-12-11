@@ -33,7 +33,7 @@ int main(int argc, const char * argv[]) {
         If  cannt read, In Xcode go to Product > Scheme > Edit Scheme > Run test (on the right) > Options (middle top)
         Down under Options check “Use custom working directory” and set it to the directory where you .txt files are located.
         */
-        string epspath ="EPS_date.csv";
+        string epspath ="EPS_date_temp.csv";
         infile.open(epspath);
         string  ticker, actualEPSstr,estimateEPSstr;
         double actualEPS,estimateEPS;
@@ -138,8 +138,14 @@ int main(int argc, const char * argv[]) {
     Beat.Bootstap_Calculate_All();
     Meet.Bootstap_Calculate_All();
     Miss.Bootstap_Calculate_All();
-    vector<double> BeACAR = Beat
-    
+//
+    vector<double> BeatACAR = Beat.getACAR();
+    vector<double> MeetACAR = Meet.getACAR();
+    vector<double> MissACAR = Miss.getACAR();
+    cout<<"Calculation for three groups done!"<<endl;
+    if(BeatACAR.size()!=60|MeetACAR.size()!=60|MissACAR.size()!=60){
+        cout<<"Dimension of  metrics have problem";
+    }else{cout<<"Metrics checked!"<<endl;}
     // Bootstrap stocks
 
     // For each stock, seach or enough prices, find date-30, date 30
@@ -162,11 +168,11 @@ int main(int argc, const char * argv[]) {
 //    }
         
 //    
+////
+// cout<<Stocks[n]->GetReturnBeginDate()<<" "<<Stocks[n]->GetReturnEndDate();
+//    vector<double> partReturns =Group::indexPtr->GetReturnVec("2018-12-10",
+//    "2019-03-07");
 //
- cout<<Stocks[n]->GetReturnBeginDate()<<" "<<Stocks[n]->GetReturnEndDate();
-    vector<double> partReturns =Group::indexPtr->GetReturnVec("2018-12-10",
-    "2019-03-07");
-    
 //    map<string,double>::iteratr it;
 //    for(it= Stocks[100]->GetPriceMap().begin();it!=Stocks[100]->GetPriceMap().end();it++){
 //        cout<<it->first<<endl;
@@ -178,30 +184,28 @@ int main(int argc, const char * argv[]) {
     // Populate the stock maps and AAR/CAAR matrix
     // Plot
     int i = 0;
-    int nIntervals = 60;
-    double intervalSize = 60.;
-    double stepSize = intervalSize/nIntervals;
+    int nIntervals = 59;
+    double stepSize = 1.0;
     double* xData = (double*) malloc((nIntervals+1)*sizeof(double));
     double* yData = (double*) malloc((nIntervals+1)*sizeof(double));
     double* yData2 = (double*) malloc((nIntervals+1)*sizeof(double));
     double* yData3 = (double*) malloc((nIntervals+1)*sizeof(double));
-    xData[0] = 0.0;
-    double x0 = 0.0;
+    xData[0] = 1.0;
+    double x0 = 1.0;
     for (i = 0; i < nIntervals; i++) {
         x0 = xData[i];
         xData[i+1] = x0 + stepSize;
     }
     for (i = 0; i <= nIntervals; i++) {
-        x0 = xData[i];
-        yData[i] = sin(x0)*cos(10*x0);
+        yData[i] = BeatACAR[i];
     }
     for (i = 0; i <= nIntervals; i++) {
-        x0 = xData[i];
-        yData2[i] = sin(x0)*cos(5*x0);
+        
+        yData2[i] = MeetACAR[i];
     }
     for (i = 0; i <= nIntervals; i++) {
-           x0 = xData[i];
-           yData3[i] = sin(x0)*cos(x0);
+           
+           yData3[i] = MissACAR[i];
        }
     
     plotResults(xData, yData, yData2, yData3, nIntervals);

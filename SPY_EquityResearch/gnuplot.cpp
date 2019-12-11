@@ -11,8 +11,8 @@ void plotResults(double* xData, double* yData, double* yData2, double* yData3, i
 {
     FILE *gnuplotPipe,*tempDataFile;
     const char *tempDataFileName1 = "Beat";
-    const char *tempDataFileName2 = "Miss";
-    const char *tempDataFileName3 = "Meet";
+    const char *tempDataFileName2 = "Meet";
+    const char *tempDataFileName3 = "Miss";
     double x,y, x2, y2,x3,y3;
     int i;
     gnuplotPipe = popen("/opt/local/bin/gnuplot","w");
