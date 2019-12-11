@@ -148,37 +148,15 @@ int main(int argc, const char * argv[]) {
     
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
-   
+  
     
-//    
-    Group::IndexSearch_CalReturn();
-//    // Caculate all;
-   
-//
-//    for(map<string,Stock*>::iterator it = pool.begin(); it != pool.end(); it++) {
-//
-//       cout << it->first << "\n";
-//     }
-//    cout<<"\n\nPlot outside menu test\n";
-    cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-    Beat.Bootstap_Calculate_All();
-    Meet.Bootstap_Calculate_All();
-    Miss.Bootstap_Calculate_All();
-//
-        cout<<"\nCalculation for three groups done!\n"<<endl;
-
-    Plot(Beat.getACAR(),Meet.getACAR(),Miss.getACAR());
-
-    //
-    //    // Menu
+// Menu
 
         cout << endl << endl << "--------------------------------menu--------------------------------" << endl << endl
-        << "Please press 1 to pull information for one stock from one group."  << endl
-//        <<"Please press 2 to retrieve historical price and calculate for bootstrapped stocks for all groups." << endl
-     << "Please press 2 to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
-//    << "Please press 3(after 2) to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
-//        << "Please press 3(after 2) to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
-    //  << "Please press 4(after 2) to show the Excel graph with CAAR for all 3 groups." << endl
+        << "Please press 1 to retrieve historical all stocks."  << endl
+        <<"Please press 2 to pull information for one stock  from one group" << endl
+       << "Please press 3(after 1)to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
+      << "Please press 4(after 1) to show the Excel graph with CAAR for all 3 groups." << endl
         << "Please press 0 to exit the program." << endl << endl;
         
         while (true)
@@ -186,19 +164,20 @@ int main(int argc, const char * argv[]) {
             char c;
             cout<<"select an option:";
             c = getchar();
-//            if (c == '2')
-//            {
-//
-//                cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-//                Beat.Bootstap_Calculate_All();
-//                Meet.Bootstap_Calculate_All();
-//                Miss.Bootstap_Calculate_All();
-//
-//                    cout<<"\nCalculation for three groups done!\n"<<endl;
-//
-//                    }
-//            else if (c == '1')
-              if (c == '1')
+            if (c == '1')
+            {
+
+                cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
+                Group::IndexSearch_CalReturn();
+                Beat.Bootstap_Calculate_All();
+                Meet.Bootstap_Calculate_All();
+                Miss.Bootstap_Calculate_All();
+
+                    cout<<"\nCalculation for three groups done!\n"<<endl;
+
+                    }
+//             if (c == '1')
+              else if (c == '2')
             {
                 string ticker;
                 cout<<"Please enter the stock symbol:"<<endl;
@@ -233,7 +212,7 @@ int main(int argc, const char * argv[]) {
                 
             }
 //            else if(c == '3' )
-                else if(c == '2' )
+                else if(c == '3' )
             {
                 string dataType;
                 
@@ -322,14 +301,14 @@ int main(int argc, const char * argv[]) {
            
             }
             
-//            else if(c == '4') {
-//                //gnuplot: CAAR 在最后的matrix里的调出
-//                vector<double> v1 = Beat.getACAR();
-//                vector<double> v2 = Meet.getACAR();
-//                vector<double> v3 = Miss.getACAR();
-//                Plot(v1, v2,v3);
-//
-//            }
+            else if(c == '4') {
+                //gnuplot:
+                vector<double> v1 = Beat.getACAR();
+                vector<double> v2 = Meet.getACAR();
+                vector<double> v3 = Miss.getACAR();
+                Plot(v1, v2,v3);
+
+            }
 //
             else if(c == '0') {
                 
