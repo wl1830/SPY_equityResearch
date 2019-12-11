@@ -122,8 +122,9 @@ int main(int argc, const char * argv[]) {
     // store the stock pointers into the Group objects according to surprise value
     vector<Stock*>::iterator Stocksitr;
     for(Stocksitr=Stocks.begin();Stocksitr!=Stocks.end();Stocksitr++)
-    {  (*Stocksitr)->SearchPrice();
-        (*Stocksitr)->CalReturn();
+    {
+//        (*Stocksitr)->SearchPrice();
+//        (*Stocksitr)->CalReturn();
         if((*Stocksitr)->getSurprise()>Thres2){
             Beat.addStock(*Stocksitr);
         }
