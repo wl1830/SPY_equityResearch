@@ -44,11 +44,11 @@ void plotResults(double* xData, double* yData, double* yData2, double* yData3, i
         fclose(tempDataFile);
         
         printf("press enter to continue...");
-        getchar();
-        remove(tempDataFileName1); //deletes the file
-        remove(tempDataFileName2);
-        remove(tempDataFileName3);
-        fprintf(gnuplotPipe,"exit \n");
+//        getchar();
+//        remove(tempDataFileName1); //deletes the file
+//        remove(tempDataFileName2);
+//        remove(tempDataFileName3);
+//        fprintf(gnuplotPipe,"exit \n");
     } else {
         printf("gnuplot not found...");
     }
