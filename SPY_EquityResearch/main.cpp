@@ -214,14 +214,18 @@ int main(int argc, const char * argv[]) {
 //            else if(c == '3' )
                 else if(c == '3' )
             {
-                string dataType;
+                if(Beat.getACAR().size()==0){
+                    //Check if the caculation done.
+                    cout<<"Please retrive historical price by pressing 1 first.\n";
+                }
+                else{string dataType;
                 
-                cout<<"Please enter the metric type (AARavg, CAARavg, AARstd,CAARstd):"<<endl;
+                cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
                 cin>> dataType;
-                if (dataType !="AARavg" && dataType != "CAARavg"&& dataType !="AARstd" && dataType != "CAARstd") cout<<endl<<"Wrong Type."<<endl;
+                if (dataType !="AAR" && dataType != "CAAR"&& dataType !="AARstd" && dataType != "CAARstd") cout<<endl<<"Wrong Type."<<endl;
                  int metricType;
-                if(dataType =="AARavg"){ metricType = 0;}
-                else if(dataType !="CAARavg"){ metricType = 1;}
+                if(dataType =="AAR"){ metricType = 0;}
+                else if(dataType !="CAAR"){ metricType = 1;}
                 else if(dataType !="AARstd"){ metricType = 2;}
                     else { metricType = 3;}
                     
@@ -236,77 +240,84 @@ int main(int argc, const char * argv[]) {
                 if (groupName == "Beat") group = 0;
                 else if (groupName == "Meet") group = 1;
                 else group = 2;
-                    cout<<endl<<"The "<<dataType<<" of group "<<groupName<<" is:"<<endl;
+                    
 
-                // 调出每组AAR或CAAR  for (Bootstrap_Calculate_All())<<","<< cout<<CalAAR()<<" "<<CalCAAR()<<endl;
-                switch (group) {
-                    case 0: //Beat
-                        switch (metricType) {
-                            case 0: //AAR
-                                PrintVecotr(Beat.getAAR());
-                                break;
-                            case 1:  //CAAR
-                            PrintVecotr(Beat.getACAR());
-                            break;
-                            case 2: //AARstd
-                            PrintVecotr(Beat.getstdAR());
-                            break;
-                            case 3: //CAARstd
-                            PrintVecotr(Beat.getstdCAR());
-                            break;
-                            default:
-                                break;
-                        }
-                        break;
-                        case 1: //Meet
+                
+                    cout<<endl<<"The "<<dataType<<" of group "<<groupName<<" is:"<<endl;
+                    switch (group) {
+                        case 0: //Beat
                             switch (metricType) {
                                 case 0: //AAR
-                                    PrintVecotr(Meet.getAAR());
+                                    PrintVecotr(Beat.getAAR());
                                     break;
-                                case 1://CAAR
-                                PrintVecotr(Meet.getACAR());
+                                case 1:  //CAAR
+                                PrintVecotr(Beat.getACAR());
                                 break;
-                                case 2://AARstd
-                                PrintVecotr(Meet.getstdAR());
+                                case 2: //AARstd
+                                PrintVecotr(Beat.getstdAR());
                                 break;
-                                case 3://CAARstd
-                                PrintVecotr(Meet.getstdCAR());
+                                case 3: //CAARstd
+                                PrintVecotr(Beat.getstdCAR());
                                 break;
                                 default:
                                     break;
                             }
                             break;
-                    case 2: //Miss
-                        switch (metricType) {
-                            case 0:  //AAR
-                                PrintVecotr(Miss.getAAR());
+                            case 1: //Meet
+                                switch (metricType) {
+                                    case 0: //AAR
+                                        PrintVecotr(Meet.getAAR());
+                                        break;
+                                    case 1://CAAR
+                                    PrintVecotr(Meet.getACAR());
+                                    break;
+                                    case 2://AARstd
+                                    PrintVecotr(Meet.getstdAR());
+                                    break;
+                                    case 3://CAARstd
+                                    PrintVecotr(Meet.getstdCAR());
+                                    break;
+                                    default:
+                                        break;
+                                }
                                 break;
-                            case 1://CAAR
-                            PrintVecotr(Miss.getACAR());
-                            break;
-                            case 2://AARstd
-                            PrintVecotr(Miss.getstdAR());
-                            break;
-                            case 3://CAARstd
-                            PrintVecotr(Miss.getstdCAR());
-                            break;
-                            default:
+                        case 2: //Miss
+                            switch (metricType) {
+                                case 0:  //AAR
+                                    PrintVecotr(Miss.getAAR());
+                                    break;
+                                case 1://CAAR
+                                PrintVecotr(Miss.getACAR());
                                 break;
-                        }
-                        break;
-                        
-                    default:
-                        break;
+                                case 2://AARstd
+                                PrintVecotr(Miss.getstdAR());
+                                break;
+                                case 3://CAARstd
+                                PrintVecotr(Miss.getstdCAR());
+                                break;
+                                default:
+                                    break;
+                            }
+                            break;
+                            
+                        default:
+                            break;
+                    }
                 }
-           
             }
             
             else if(c == '4') {
                 //gnuplot:
+                if(Beat.getACAR().size()==0){
+                                   cout<<"Please retrive historical price by pressing 1 first.\n";
+                               }
+                else{
                 vector<double> v1 = Beat.getACAR();
                 vector<double> v2 = Meet.getACAR();
                 vector<double> v3 = Miss.getACAR();
-                Plot(v1, v2,v3);
+                                   Plot(v1, v2,v3);
+                                   
+                               }
 
             }
 //
