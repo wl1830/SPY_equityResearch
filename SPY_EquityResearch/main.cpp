@@ -160,43 +160,45 @@ int main(int argc, const char * argv[]) {
 //       cout << it->first << "\n";
 //     }
 //    cout<<"\n\nPlot outside menu test\n";
-//    cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-//    Beat.Bootstap_Calculate_All();
-//    Meet.Bootstap_Calculate_All();
-//    Miss.Bootstap_Calculate_All();
+    cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
+    Beat.Bootstap_Calculate_All();
+    Meet.Bootstap_Calculate_All();
+    Miss.Bootstap_Calculate_All();
 //
-//        cout<<"\nCalculation for three groups done!\n"<<endl;
+        cout<<"\nCalculation for three groups done!\n"<<endl;
 
-//    Plot(Beat.getACAR(),Meet.getACAR(),Miss.getACAR());
+    Plot(Beat.getACAR(),Meet.getACAR(),Miss.getACAR());
 
     //
     //    // Menu
 
         cout << endl << endl << "--------------------------------menu--------------------------------" << endl << endl
         << "Please press 1 to pull information for one stock from one group."  << endl
-        <<"Please press 2 to retrieve historical price and calculate for bootstrapped stocks for all groups." << endl
-        << "Please press 3(after 2) to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
-        << "Please press 4(after 2) to show the Excel graph with CAAR for all 3 groups." << endl
-        << "Please press 5 to exit the program." << endl << endl;
+//        <<"Please press 2 to retrieve historical price and calculate for bootstrapped stocks for all groups." << endl
+     << "Please press 2 to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
+//    << "Please press 3(after 2) to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
+//        << "Please press 3(after 2) to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
+    //  << "Please press 4(after 2) to show the Excel graph with CAAR for all 3 groups." << endl
+        << "Please press 0 to exit the program." << endl << endl;
         
         while (true)
         {
             char c;
             cout<<"select an option:";
             c = getchar();
-            if (c == '2')
-            {
-                
-                cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-                Beat.Bootstap_Calculate_All();
-                Meet.Bootstap_Calculate_All();
-                Miss.Bootstap_Calculate_All();
-
-                    cout<<"\nCalculation for three groups done!\n"<<endl;
-                
-                    }
-            else if (c == '1')
-                
+//            if (c == '2')
+//            {
+//
+//                cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
+//                Beat.Bootstap_Calculate_All();
+//                Meet.Bootstap_Calculate_All();
+//                Miss.Bootstap_Calculate_All();
+//
+//                    cout<<"\nCalculation for three groups done!\n"<<endl;
+//
+//                    }
+//            else if (c == '1')
+              if (c == '1')
             {
                 string ticker;
                 cout<<"Please enter the stock symbol:"<<endl;
@@ -230,7 +232,9 @@ int main(int argc, const char * argv[]) {
                 
                 
             }
-            else if(c == '3' ){
+//            else if(c == '3' )
+                else if(c == '2' )
+            {
                 string dataType;
                 
                 cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
@@ -253,7 +257,7 @@ int main(int argc, const char * argv[]) {
                 if (groupName == "Beat") group = 0;
                 else if (groupName == "Meet") group = 1;
                 else group = 2;
-                    cout<<endl<<"The"<<dataType<<" of group"<<groupName<<" is:"<<endl;
+                    cout<<endl<<"The "<<dataType<<" of group "<<groupName<<" is:"<<endl;
 
                 // 调出每组AAR或CAAR  for (Bootstrap_Calculate_All())<<","<< cout<<CalAAR()<<" "<<CalCAAR()<<endl;
                 switch (group) {
@@ -318,16 +322,16 @@ int main(int argc, const char * argv[]) {
            
             }
             
-            else if(c == '4') {
-                //gnuplot: CAAR 在最后的matrix里的调出
-                vector<double> v1 = Beat.getACAR();
-                vector<double> v2 = Meet.getACAR();
-                vector<double> v3 = Miss.getACAR();
-                Plot(v1, v2,v3);
-                
-            }
-            
-            else if(c == '5') {
+//            else if(c == '4') {
+//                //gnuplot: CAAR 在最后的matrix里的调出
+//                vector<double> v1 = Beat.getACAR();
+//                vector<double> v2 = Meet.getACAR();
+//                vector<double> v3 = Miss.getACAR();
+//                Plot(v1, v2,v3);
+//
+//            }
+//
+            else if(c == '0') {
                 
                 break;}
             
@@ -337,7 +341,7 @@ int main(int argc, const char * argv[]) {
 
 
     
-    Plot(Beat.getACAR(),Meet.getACAR(),Miss.getACAR());
+
     
     for(Stock* stk_ptr:Stocks){
         delete stk_ptr;

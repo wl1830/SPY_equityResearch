@@ -118,7 +118,7 @@ string getTimeinSeconds(string Time)
 }
 
 void Stock::SearchPrice(){
-
+    try{
         string startTime = getTimeinSeconds(date_minus_30);
     
         string endTime = getTimeinSeconds(date_30);
@@ -236,10 +236,11 @@ void Stock::SearchPrice(){
 //                fp = fopen(resultfilename, "ab");
                 /*curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
                 curl_easy_setopt(handle, CURLOPT_WRITEDATA, fp);
-                result = curl_easy_perform(handle);
+                
                 fclose(fp);重复了 应该写成write——data2
                 */
                 /* Check for errors */
+                result = curl_easy_perform(handle);
                 if (result != CURLE_OK)
                 {
                     /* if errors have occurred, tell us what is wrong with 'result'*/
@@ -301,7 +302,8 @@ void Stock::SearchPrice(){
         /* this function releases resources acquired by curl_global_init() */
         curl_global_cleanup();
         
-
+    }
+    catch(...){}
     
 }
 
@@ -360,12 +362,12 @@ void Index::SearchPrice(){
                     fclose(fp);
     
                     /* Check for errors */
-                    if (result != CURLE_OK)
-                    {
-                        /* if errors have occurred, tell us what is wrong with 'result'*/
-                        fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
-                 
-                    }
+                       if (result != CURLE_OK)
+                       {
+                           /* if errors have occurred, tell us what is wrong with 'result'*/
+                           fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
+                    
+                       }
     
                     
                     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data2);
@@ -426,16 +428,21 @@ void Index::SearchPrice(){
                 fclose(fp);重复了 应该写成write——data2
                 */
                 /* Check for errors */
-                if (result != CURLE_OK)
-                {
-                    /* if errors have occurred, tell us what is wrong with 'result'*/
-                    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
-              
-                }
+//                if (result != CURLE_OK)
+//                {
+//                    /* if errors have occurred, tell us what is wrong with 'result'*/
+//                    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
+//
+//                }
                 curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data2);
                 curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)&data);
                 result = curl_easy_perform(handle);
+    if (result != CURLE_OK)
+      {
+          /* if errors have occurred, tell us what is wrong with 'result'*/
+          fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
     
+      }
                 stringstream sData;
                 sData.str(data.memory);
                 string line;
