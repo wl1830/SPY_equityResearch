@@ -237,13 +237,13 @@ int main(int argc, const char * argv[]) {
             {
                 string dataType;
                 
-                cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
+                cout<<"Please enter the metric type (AARavg, CAARavg, AARstd,CAARstd):"<<endl;
                 cin>> dataType;
-                if (dataType !="AAR" && dataType != "CAAR"&& dataType !="AARstd" && dataType != "CAARstd") cout<<endl<<"Wrong Type."<<endl;
+                if (dataType !="AARavg" && dataType != "CAARavg"&& dataType !="AARstd" && dataType != "CAARstd") cout<<endl<<"Wrong Type."<<endl;
                  int metricType;
-                if(dataType =="AAR"){ metricType = 0;}
-                else if(dataType !="AARstd"){ metricType = 1;}
-                else if(dataType !="CAARstd"){ metricType = 2;}
+                if(dataType =="AARavg"){ metricType = 0;}
+                else if(dataType !="CAARavg"){ metricType = 1;}
+                else if(dataType !="AARstd"){ metricType = 2;}
                     else { metricType = 3;}
                     
                 
