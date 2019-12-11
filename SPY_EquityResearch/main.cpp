@@ -131,14 +131,22 @@ int main(int argc, const char * argv[]) {
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
    
+    
+//    int n=0;
+//      for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
+//             cout<<(*Stocksitr)->getTicker();
+//             (*Stocksitr)->SearchPrice();
+//          cout<<" searches sucess\n";
+//         }
+    
     // Calculation
     // Search price Caculate return for all dates;
     Group::IndexSearch_CalReturn();
     // Caculate all;
     Beat.Bootstap_Calculate_All();
-//    Meet.Bootstap_Calculate_All();
-//    Miss.Bootstap_Calculate_All();
-////
+    Meet.Bootstap_Calculate_All();
+    Miss.Bootstap_Calculate_All();
+//
     vector<double> BeatACAR = Beat.getACAR();
     vector<double> MeetACAR = Meet.getACAR();
     vector<double> MissACAR = Miss.getACAR();
@@ -147,82 +155,57 @@ int main(int argc, const char * argv[]) {
     if(BeatACAR.size()!=60|MeetACAR.size()!=60|MissACAR.size()!=60){
         cout<<"Dimension of  metrics have problem";
     }else{cout<<"Metrics checked!"<<endl;}
-    // Bootstrap stocks
-    cout<<"BeatACAR"<<endl;
-    for(int i=0;i<BeatACAR.size();i++){
-        cout<<BeatACAR[i]<<endl;
-    }
-    cout<<"MeetACAR"<<endl;
-    for(int i=0;i<MeetACAR.size();i++){
-        cout<<MeetACAR[i]<<endl;
-    }
-    cout<<"MissACAR"<<endl;
-    for(int i=0;i<MissACAR.size();i++){
-        cout<<MissACAR[i]<<endl;
-    }
+
+//    cout<<"BeatACAR"<<endl;
+//    for(int i=0;i<BeatACAR.size();i++){
+//        cout<<BeatACAR[i]<<endl;
+//    }
+//    cout<<"MeetACAR"<<endl;
+//    for(int i=0;i<MeetACAR.size();i++){
+//        cout<<MeetACAR[i]<<endl;
+//    }
+//    cout<<"MissACAR"<<endl;
+//    for(int i=0;i<MissACAR.size();i++){
+//        cout<<MissACAR[i]<<endl;
+//    }
 //
-//    // For each stock, seach or enough prices, find date-30, date 30
+//
 //    // Yahoo get prices for sampled stocks
-//
-////    int n = 377;
-////    cout<<Stocks[n]->getTicker()<<endl;
-////    Stocks[n]->SearchPrice();
-////    cout<<"Pricemap size:"<<Stocks[n]->GetPriceMap().size()<<endl;
-////    Stocks[n]->CalReturn();
-//
-//
-////    for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
-////        cout<<(*Stocksitr)->getTicker()<<endl;
-////        (*Stocksitr)->SearchPrice();
-////        (*Stocksitr)->CalReturn();
-////        cout<<(*Stocksitr)->GetReturnBeginDate()<<endl;
-////        cout<<(*Stocksitr)->GetReturnEndDate()<<endl;
-////        vector<double> partReturns =Group::indexPtr->GetReturnVec((*Stocksitr)->GetReturnBeginDate(), (*Stocksitr)->GetReturnEndDate());
-////    }
-//
-////
-//////
-//// cout<<Stocks[n]->GetReturnBeginDate()<<" "<<Stocks[n]->GetReturnEndDate();
-////    vector<double> partReturns =Group::indexPtr->GetReturnVec("2018-12-10",
-////    "2019-03-07");
-////
-////    map<string,double>::iteratr it;
-////    for(it= Stocks[100]->GetPriceMap().begin();it!=Stocks[100]->GetPriceMap().end();it++){
-////        cout<<it->first<<endl;
-////        cout<<it->second<<endl;
-////    }
+
 //
 //    // Yahoo get prices for index
 //    // Calculations
 //    // Populate the stock maps and AAR/CAAR matrix
+   
     // Plot
-    int i = 0;
-    int nIntervals = 59;
-    double stepSize = 1.0;
-    double* xData = (double*) malloc((nIntervals+1)*sizeof(double));
-    double* yData = (double*) malloc((nIntervals+1)*sizeof(double));
-    double* yData2 = (double*) malloc((nIntervals+1)*sizeof(double));
-    double* yData3 = (double*) malloc((nIntervals+1)*sizeof(double));
-    xData[0] = 1.0;
-    double x0 = 1.0;
-    for (i = 0; i < nIntervals; i++) {
-        x0 = xData[i];
-        xData[i+1] = x0 + stepSize;
-    }
-    for (i = 0; i <= nIntervals; i++) {
-        yData[i] = BeatACAR[i];
-    }
-    for (i = 0; i <= nIntervals; i++) {
+//    int i = 0;
+//    int nIntervals = 59;
+//    double stepSize = 1.0;
+//    double* xData = (double*) malloc((nIntervals+1)*sizeof(double));
+//    double* yData = (double*) malloc((nIntervals+1)*sizeof(double));
+//    double* yData2 = (double*) malloc((nIntervals+1)*sizeof(double));
+//    double* yData3 = (double*) malloc((nIntervals+1)*sizeof(double));
+//    xData[0] = 1.0;
+//    double x0 = 1.0;
+//    for (i = 0; i < nIntervals; i++) {
+//        x0 = xData[i];
+//        xData[i+1] = x0 + stepSize;
+//    }
+//    for (i = 0; i <= nIntervals; i++) {
+//        yData[i] = BeatACAR[i];
+//    }
+//    for (i = 0; i <= nIntervals; i++) {
+//
+//        yData2[i] = MeetACAR[i];
+//    }
+//    for (i = 0; i <= nIntervals; i++) {
+//
+//           yData3[i] = MissACAR[i];
+//       }
 
-        yData2[i] = MeetACAR[i];
-    }
-    for (i = 0; i <= nIntervals; i++) {
-
-           yData3[i] = MissACAR[i];
-       }
-
-    plotResults(xData, yData, yData2, yData3, nIntervals);
+    Plot(BeatACAR, MeetACAR, MissACAR);
 //
 //    // Menu
     // Delete stocks and spy
         }
+

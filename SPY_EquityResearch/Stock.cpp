@@ -27,7 +27,7 @@ void Equity::CalReturn(){
         returnMap[next(itr) ->first] = stockr;//SR:stock return
     }
     cout<<"Return of "<<ticker <<" calculated"<<endl;
-    if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
+//    if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
 
 }
 
@@ -131,7 +131,7 @@ void Stock::SearchPrice(){
     
         //name of files
         const char outfilename[FILENAME_MAX] = "Output.txt";
-        const char resultfilename[FILENAME_MAX] = "Results.txt";
+//        const char resultfilename[FILENAME_MAX] = "Results.txt";
     
         /* declaration of an object CURL */
         CURL *handle;
@@ -150,8 +150,9 @@ void Stock::SearchPrice(){
         if (handle)
         {
             while (true)
-            {
-                string sCookies, sCrumb;
+            {  string sCookies,sCrumb;
+//                string sCookies = "18h3qj5eut97p&b=3&s=b7"
+//                string sCrumb = "Y29P3C2VYL";
                 if (sCookies.length() == 0 || sCrumb.length() == 0)
                 {
                     fp = fopen(outfilename, "w");
@@ -218,7 +219,6 @@ void Stock::SearchPrice(){
                 
                 if (itr == symbolList.end())
                     break;
-    
                 string urlA = "https://query1.finance.yahoo.com/v7/finance/download/";
                 string symbol = *itr;
                 string urlB = "?period1=";
@@ -229,7 +229,7 @@ void Stock::SearchPrice(){
                 const char * cookies = sCookies.c_str();
                 curl_easy_setopt(handle, CURLOPT_COOKIE, cookies);   // Only needed for 1st stock
                 curl_easy_setopt(handle, CURLOPT_URL, cURL);
-                fp = fopen(resultfilename, "ab");
+//                fp = fopen(resultfilename, "ab");
                 /*curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
                 curl_easy_setopt(handle, CURLOPT_WRITEDATA, fp);
                 result = curl_easy_perform(handle);
@@ -317,7 +317,7 @@ void Index::SearchPrice(){
     
         //name of files
         const char outfilename[FILENAME_MAX] = "Output.txt";
-        const char resultfilename[FILENAME_MAX] = "Results.txt";
+//        const char resultfilename[FILENAME_MAX] = "Results.txt";
     
         /* declaration of an object CURL */
         CURL *handle;
@@ -415,7 +415,7 @@ void Index::SearchPrice(){
                 const char * cookies = sCookies.c_str();
                 curl_easy_setopt(handle, CURLOPT_COOKIE, cookies);   // Only needed for 1st stock
                 curl_easy_setopt(handle, CURLOPT_URL, cURL);
-                fp = fopen(resultfilename, "ab");
+                
                 /*curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
                 curl_easy_setopt(handle, CURLOPT_WRITEDATA, fp);
                 result = curl_easy_perform(handle);
@@ -432,13 +432,6 @@ void Index::SearchPrice(){
                 curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)&data);
                 result = curl_easy_perform(handle);
     
-                /* Check for errors */
-                if (result != CURLE_OK)
-                {
-                    /* if errors have occurred, tell us what is wrong with 'result'*/
-                    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
-              
-                }
                 stringstream sData;
                 sData.str(data.memory);
                 string line;
@@ -459,7 +452,6 @@ void Index::SearchPrice(){
                 adjClose = stold(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
                 
-//                cout<<date<<" "<<adjClose<<endl;
                 priceMap[date] = adjClose;
                 }
                 itr++;

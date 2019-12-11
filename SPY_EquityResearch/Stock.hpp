@@ -54,9 +54,7 @@ public:
 //        cout<<"Default constructor of stock"<<endl;
         if (EEPS == 0) {surprise  = (EPS- EEPS)/EPS;}
         else surprise  = (EPS- EEPS)/EEPS;
-//        cout<< EPS<<" " ;
-//        cout<<EEPS<<" ";
-//        cout<<"surprise is "<<surprise<<endl;
+
     }
     vector<double> GetReturnVec();
     void Print(){
@@ -86,4 +84,6 @@ public:
     void SearchPrice();//get prices
    
 };
+
+
 #endif /* Stock_hpp */
