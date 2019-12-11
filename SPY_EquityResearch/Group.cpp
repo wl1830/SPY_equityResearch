@@ -22,10 +22,11 @@ void Group::BootStrap(int n){
                 break;
             }
         }
-    cout<<"The sampled stocks are"<<endl;
+    cout<<"\nThe sampled stocks are"<<endl;
     for(itr=SampleStockPtrs.begin();itr!=SampleStockPtrs.end();itr++){
         cout<<(*itr)->getTicker()<<" ";
     }
+    cout<<endl;
 //    cout<<"Bootstrapped the stocks"<<endl;
 //    cout<<"The size of sampleStockPtrs vector: "<<SampleStockPtrs.size()<<endl;
 }
@@ -51,7 +52,7 @@ void Group::CalAR(){
 void  Group::CalCAR(){
     
     for(int s=0;s<AR.size();s++){
-        double cu = 0;
+        double cu = 0.0;
         vector<double> temp;
         for(int d=0;d<AR[0].size();d++){
             cu += AR[s][d];
@@ -67,9 +68,9 @@ void  Group::CalCAR(){
 void Group::CalAAR(){ // 60*1average of abnormal return
         
     for(int d=0;d<AR[0].size();d++){
-        double mean = 0;
+        double mean = 0.0;
         for(int s=0;s<AR.size();s++){
-            mean = (mean*s+AR[s][d])/(s+1);
+            mean = (mean*s+AR[s][d])/(s+1.0);
         }
         AAR.push_back(mean);
     }
@@ -79,9 +80,9 @@ void Group::CalAAR(){ // 60*1average of abnormal return
 void  Group::CalACAR(){//average of cumulative abnormal return
     
     for(int d=0;d<CAR[0].size();d++){
-        double mean = 0;
+        double mean = 0.0;
         for(int s=0;s<CAR.size();s++){
-            mean = (mean*s+CAR[s][d])/(s+1);
+            mean = (mean*s+CAR[s][d])/(s+1.0);
         }
         ACAR.push_back(mean);
     }
@@ -89,11 +90,11 @@ void  Group::CalACAR(){//average of cumulative abnormal return
 }
 void  Group::CalARstd(){
     for(int d=0;d<AR[0].size();d++){
-        double var = 0;
-        double mean = 0;
+        double var = 0.0;
+        double mean = 0.0;
         for(int s=0;s<AR.size();s++){
             mean = (mean*s+AR[s][d])/(s+1);
-            var = (var*s+(AR[s][d])*(AR[s][d]))/(s+1);
+            var = (var*s+(AR[s][d])*(AR[s][d]))/(s+1.0);
         }
         stdAR.push_back(sqrt(var-mean*mean));
         
@@ -102,11 +103,11 @@ void  Group::CalARstd(){
 }
 void  Group::CalCARstd(){
     for(int d=0;d<CAR[0].size();d++){
-        double var = 0;
-        double mean = 0;
+        double var = 0.0;
+        double mean = 0.0;
         for(int s=0;s<CAR.size();s++){
             mean = (mean*s+CAR[s][d])/(s+1);
-            var = (var*s+(CAR[s][d])*(CAR[s][d]))/(s+1);
+            var = (var*s+(CAR[s][d])*(CAR[s][d]))/(s+1.0);
         }
         stdCAR.push_back(sqrt(var-mean*mean));
         

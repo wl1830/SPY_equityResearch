@@ -142,11 +142,24 @@ int main(int argc, const char * argv[]) {
     vector<double> BeatACAR = Beat.getACAR();
     vector<double> MeetACAR = Meet.getACAR();
     vector<double> MissACAR = Miss.getACAR();
+    
     cout<<"Calculation for three groups done!"<<endl;
     if(BeatACAR.size()!=60|MeetACAR.size()!=60|MissACAR.size()!=60){
         cout<<"Dimension of  metrics have problem";
     }else{cout<<"Metrics checked!"<<endl;}
     // Bootstrap stocks
+    cout<<"BeatACAR"<<endl;
+    for(int i=0;i<BeatACAR.size();i++){
+        cout<<BeatACAR[i]<<endl;
+    }
+    cout<<"MeetACAR"<<endl;
+    for(int i=0;i<MeetACAR.size();i++){
+        cout<<MeetACAR[i]<<endl;
+    }
+    cout<<"MissACAR"<<endl;
+    for(int i=0;i<MissACAR.size();i++){
+        cout<<MissACAR[i]<<endl;
+    }
 
     // For each stock, seach or enough prices, find date-30, date 30
     // Yahoo get prices for sampled stocks
