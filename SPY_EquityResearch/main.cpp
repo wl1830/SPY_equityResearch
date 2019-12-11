@@ -122,7 +122,8 @@ int main(int argc, const char * argv[]) {
     // store the stock pointers into the Group objects according to surprise value
     vector<Stock*>::iterator Stocksitr;
     for(Stocksitr=Stocks.begin();Stocksitr!=Stocks.end();Stocksitr++)
-    {
+    {  (*Stocksitr)->SearchPrice();
+        (*Stocksitr)->CalReturn();
         if((*Stocksitr)->getSurprise()>Thres2){
             Beat.addStock(*Stocksitr);
         }
@@ -131,6 +132,7 @@ int main(int argc, const char * argv[]) {
         }
         else{ Miss.addStock(*Stocksitr);
         }
+        
     }
     cout<<"\nThere are "<<Beat.getStockPtr().size()<<" stocks in the Beat group."<<endl;
     cout<<"There are "<<Meet.getStockPtr().size()<<" stocks in the Meet group."<<endl;
@@ -148,7 +150,7 @@ int main(int argc, const char * argv[]) {
     
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
-  
+     
     
 // Menu
 

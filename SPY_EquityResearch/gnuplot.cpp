@@ -56,7 +56,7 @@ void plotResults(double* xData, double* yData, double* yData2, double* yData3, i
 
 
 
-void Plot(vector<double> v1,vector<double> v2,vector<double> v3,int nIntervals ,double stepSize,double x0,const char *tempDataFileName1 ,const char *tempDataFileName2  ,const char *tempDataFileName3 ){
+void Plot(vector<double> v1,vector<double> v2,vector<double> v3,int nIntervals ,double stepSize,double x0,const char *tempDataFileName1 ,const char *tempDataFileName2 ,const char *tempDataFileName3 ){
     int i = 0;
     double* xData = (double*) malloc((nIntervals+1)*sizeof(double));
     double* yData = (double*) malloc((nIntervals+1)*sizeof(double));
