@@ -132,15 +132,7 @@ int main(int argc, const char * argv[]) {
      Group::indexPtr = new Index("SPY",minDate,maxDate);
    
     
-//    int n=0;
-//      for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
-//             cout<<(*Stocksitr)->getTicker();
-//             (*Stocksitr)->SearchPrice();
-//          cout<<" searches sucess\n";
-//         }
-    
-    // Calculation
-    // Search price Caculate return for all dates;
+//    
     Group::IndexSearch_CalReturn();
     // Caculate all;
     Beat.Bootstap_Calculate_All();
@@ -156,56 +148,19 @@ int main(int argc, const char * argv[]) {
         cout<<"Dimension of  metrics have problem";
     }else{cout<<"Metrics checked!"<<endl;}
 
-//    cout<<"BeatACAR"<<endl;
-//    for(int i=0;i<BeatACAR.size();i++){
-//        cout<<BeatACAR[i]<<endl;
-//    }
-//    cout<<"MeetACAR"<<endl;
-//    for(int i=0;i<MeetACAR.size();i++){
-//        cout<<MeetACAR[i]<<endl;
-//    }
-//    cout<<"MissACAR"<<endl;
-//    for(int i=0;i<MissACAR.size();i++){
-//        cout<<MissACAR[i]<<endl;
-//    }
-//
-//
-//    // Yahoo get prices for sampled stocks
-
-//
-//    // Yahoo get prices for index
-//    // Calculations
-//    // Populate the stock maps and AAR/CAAR matrix
-   
-    // Plot
-//    int i = 0;
-//    int nIntervals = 59;
-//    double stepSize = 1.0;
-//    double* xData = (double*) malloc((nIntervals+1)*sizeof(double));
-//    double* yData = (double*) malloc((nIntervals+1)*sizeof(double));
-//    double* yData2 = (double*) malloc((nIntervals+1)*sizeof(double));
-//    double* yData3 = (double*) malloc((nIntervals+1)*sizeof(double));
-//    xData[0] = 1.0;
-//    double x0 = 1.0;
-//    for (i = 0; i < nIntervals; i++) {
-//        x0 = xData[i];
-//        xData[i+1] = x0 + stepSize;
-//    }
-//    for (i = 0; i <= nIntervals; i++) {
-//        yData[i] = BeatACAR[i];
-//    }
-//    for (i = 0; i <= nIntervals; i++) {
-//
-//        yData2[i] = MeetACAR[i];
-//    }
-//    for (i = 0; i <= nIntervals; i++) {
-//
-//           yData3[i] = MissACAR[i];
-//       }
-
+    //
+    
+    
     Plot(BeatACAR, MeetACAR, MissACAR);
+    for(Stock* stk_ptr:Stocks){
+        delete stk_ptr;
+    }
+    Stocks.clear();
+    delete Group::indexPtr;
+    Group::indexPtr = NULL;
 //
 //    // Menu
+    
     // Delete stocks and spy
         }
 
