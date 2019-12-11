@@ -36,6 +36,7 @@ void Group::CalAR(){
     
     
     vector<Stock*>::iterator itr;
+    
     for(itr=SampleStockPtrs.begin();itr!=SampleStockPtrs.end();itr++){
         (*itr)->SearchPrice();
         (*itr)->CalReturn();
@@ -44,8 +45,22 @@ void Group::CalAR(){
         vector<double> vStock =(*itr)->GetReturnVec();
         vector<double> vIndex =indexPtr->GetReturnVec(d1,d60);
         AR.push_back((vStock-vIndex));
-        
+//        cout<<"stock:\n";
+//        for (int i=0;i<vStock.size();i++){
+//            cout<<vStock[i]<<"\t";
+//        }
+//        cout<<"Index:\n";
+//        for (int i=0;i<vStock.size();i++){
+//            cout<<vIndex[i]<<"\t";
+//        }
     }
+//    cout<<"\n AR matrix: \n";
+//    for (int i=0;i<AR.size();i++)
+//        for(int j=0;j<AR[0].size();j++){
+//            cout<<AR[i][j]<<"\t";
+//
+//        }
+    cout<<"\n";
 //    cout<<"The size of AR:"<<AR.size()<<" * "<<AR[0].size()<<endl;
 }
 

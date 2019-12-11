@@ -31,7 +31,7 @@ int main(int argc, const char * argv[]) {
         ifstream infile;
        /*
         If  cannt read, In Xcode go to Product > Scheme > Edit Scheme > Run test (on the right) > Options (middle top)
-        Down under Options check “Use custom working directory” and set it to the directory where you .txt files are located.
+        Down under Options check “Use custom working directory” and set it to the directory where your files are located.
         */
         string epspath ="EPS_date_temp.csv";
         infile.open(epspath);
@@ -136,13 +136,13 @@ int main(int argc, const char * argv[]) {
     Group::IndexSearch_CalReturn();
     // Caculate all;
     Beat.Bootstap_Calculate_All();
-    Meet.Bootstap_Calculate_All();
-    Miss.Bootstap_Calculate_All();
-//
+//    Meet.Bootstap_Calculate_All();
+//    Miss.Bootstap_Calculate_All();
+////
     vector<double> BeatACAR = Beat.getACAR();
     vector<double> MeetACAR = Meet.getACAR();
     vector<double> MissACAR = Miss.getACAR();
-    
+//
     cout<<"Calculation for three groups done!"<<endl;
     if(BeatACAR.size()!=60|MeetACAR.size()!=60|MissACAR.size()!=60){
         cout<<"Dimension of  metrics have problem";
@@ -160,41 +160,41 @@ int main(int argc, const char * argv[]) {
     for(int i=0;i<MissACAR.size();i++){
         cout<<MissACAR[i]<<endl;
     }
-
-    // For each stock, seach or enough prices, find date-30, date 30
-    // Yahoo get prices for sampled stocks
-    
-//    int n = 377;
-//    cout<<Stocks[n]->getTicker()<<endl;
-//    Stocks[n]->SearchPrice();
-//    cout<<"Pricemap size:"<<Stocks[n]->GetPriceMap().size()<<endl;
-//    Stocks[n]->CalReturn();
-    
-    
-//    for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
-//        cout<<(*Stocksitr)->getTicker()<<endl;
-//        (*Stocksitr)->SearchPrice();
-//        (*Stocksitr)->CalReturn();
-//        cout<<(*Stocksitr)->GetReturnBeginDate()<<endl;
-//        cout<<(*Stocksitr)->GetReturnEndDate()<<endl;
-//        vector<double> partReturns =Group::indexPtr->GetReturnVec((*Stocksitr)->GetReturnBeginDate(), (*Stocksitr)->GetReturnEndDate());
-//    }
-        
-//    
-////
-// cout<<Stocks[n]->GetReturnBeginDate()<<" "<<Stocks[n]->GetReturnEndDate();
-//    vector<double> partReturns =Group::indexPtr->GetReturnVec("2018-12-10",
-//    "2019-03-07");
 //
-//    map<string,double>::iteratr it;
-//    for(it= Stocks[100]->GetPriceMap().begin();it!=Stocks[100]->GetPriceMap().end();it++){
-//        cout<<it->first<<endl;
-//        cout<<it->second<<endl;
-//    }
-    
-    // Yahoo get prices for index
-    // Calculations
-    // Populate the stock maps and AAR/CAAR matrix
+//    // For each stock, seach or enough prices, find date-30, date 30
+//    // Yahoo get prices for sampled stocks
+//
+////    int n = 377;
+////    cout<<Stocks[n]->getTicker()<<endl;
+////    Stocks[n]->SearchPrice();
+////    cout<<"Pricemap size:"<<Stocks[n]->GetPriceMap().size()<<endl;
+////    Stocks[n]->CalReturn();
+//
+//
+////    for(Stocksitr=(Stocks.begin()+n);Stocksitr!=Stocks.end();Stocksitr++){
+////        cout<<(*Stocksitr)->getTicker()<<endl;
+////        (*Stocksitr)->SearchPrice();
+////        (*Stocksitr)->CalReturn();
+////        cout<<(*Stocksitr)->GetReturnBeginDate()<<endl;
+////        cout<<(*Stocksitr)->GetReturnEndDate()<<endl;
+////        vector<double> partReturns =Group::indexPtr->GetReturnVec((*Stocksitr)->GetReturnBeginDate(), (*Stocksitr)->GetReturnEndDate());
+////    }
+//
+////
+//////
+//// cout<<Stocks[n]->GetReturnBeginDate()<<" "<<Stocks[n]->GetReturnEndDate();
+////    vector<double> partReturns =Group::indexPtr->GetReturnVec("2018-12-10",
+////    "2019-03-07");
+////
+////    map<string,double>::iteratr it;
+////    for(it= Stocks[100]->GetPriceMap().begin();it!=Stocks[100]->GetPriceMap().end();it++){
+////        cout<<it->first<<endl;
+////        cout<<it->second<<endl;
+////    }
+//
+//    // Yahoo get prices for index
+//    // Calculations
+//    // Populate the stock maps and AAR/CAAR matrix
     // Plot
     int i = 0;
     int nIntervals = 59;
@@ -213,16 +213,16 @@ int main(int argc, const char * argv[]) {
         yData[i] = BeatACAR[i];
     }
     for (i = 0; i <= nIntervals; i++) {
-        
+
         yData2[i] = MeetACAR[i];
     }
     for (i = 0; i <= nIntervals; i++) {
-           
+
            yData3[i] = MissACAR[i];
        }
-    
+
     plotResults(xData, yData, yData2, yData3, nIntervals);
-    
-    // Menu
+//
+//    // Menu
     // Delete stocks and spy
         }

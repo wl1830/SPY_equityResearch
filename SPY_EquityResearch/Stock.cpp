@@ -21,11 +21,10 @@ using namespace std;
 
 void Equity::CalReturn(){
     map<string,double> ::iterator itr;
-    for(itr=++priceMap.begin();itr!=priceMap.end();itr++){
-        
-        double lastPrice = (--itr->second);
-        double todayPrice = ++itr->second;
-        returnMap[itr->first] = (todayPrice-lastPrice)/lastPrice;
+    
+    for (itr = priceMap.begin(); itr!= prev(priceMap.end());itr++){
+        double stockr = (next(itr) ->second - itr->second)/(itr->second);
+        returnMap[next(itr) ->first] = stockr;//SR:stock return
     }
     cout<<"Return of "<<ticker <<" calculated"<<endl;
     if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
