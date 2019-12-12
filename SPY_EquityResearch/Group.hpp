@@ -26,12 +26,12 @@ private:
     string groupName;
     vector<Stock*> StockPtrs;
     vector<Stock*> SampleStockPtrs;
-    Matrix AR;
-    Matrix CAR;
-    vector<double> AAR;
-    vector<double> ACAR;
-    vector<double> stdAR;
-    vector<double> stdCAR;
+    Matrix AARm;
+    Matrix CAARm;
+    vector<double> avgAAR;
+    vector<double> avgCAAR;
+    vector<double> stdAAR;
+    vector<double> stdCAAR;
 public:
     
     static Index * indexPtr;
@@ -53,23 +53,25 @@ public:
     }
     
     
-    void BootStrap(int n =30); //Set SampleStockPtrs
+    void Sample(int n =30); //Set SampleStockPtrs
     
     static void IndexSearch_CalReturn(){
         indexPtr->SearchPrice();
         indexPtr->CalReturn();
     }
-    void CalAR(); // 60*30
-    void CalCAR(); // 60*30
+    vector<double> CalAARv();//60*1
+//    vector<double> CalCAARv();//60*1
     
-    void CalAAR(); //60*1
-    void CalACAR();//60*1
-    void  CalARstd();//60*1
-    void CalCARstd();//60*1
-    void Bootstap_Calculate_All();//Return [AAR,CAAR,AARstd,CAARstd], each element is a  60*1 vector
-    vector<double> getAAR(){return AAR;}
-    vector<double> getACAR(){return ACAR;}
-    vector<double> getstdAR(){return stdAR;}
-    vector<double> getstdCAR(){return stdCAR;}
+    void Cal_AARm_CAARm(); // 60*30 //assign to AAR
+    void CalAARavg(); //60*1
+    void CalCAARavg();//60*1
+    void CalAARstd();//60*1
+    void CalCAARstd();//60*1
+    void Bootstap30_Calculate_All();//Return [AAR,CAAR,AARstd,CAARstd], each element is a  60*1 vector
+    vector<double> getAARavg(){return avgAAR;}
+    vector<double> getCAARavg(){return avgCAAR;}
+    vector<double> getAARstd(){return stdAAR;}
+    vector<double> getCAARstd(){return stdCAAR;}
+    
 };
 #endif /* Group_hpp */

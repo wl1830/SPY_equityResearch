@@ -169,12 +169,17 @@ int main(int argc, const char * argv[]) {
             c = getchar();
             if (c == '1')
             {
-
+                Group::indexPtr->SearchPrice();
+                Group::indexPtr->CalReturn();
                 cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-                Group::IndexSearch_CalReturn();
-                Beat.Bootstap_Calculate_All();
-                Meet.Bootstap_Calculate_All();
-                Miss.Bootstap_Calculate_All();
+                for(vector<Stock*>::iterator itr=Stocks.begin();itr!=Stocks.end();itr++){
+                    
+                    (*itr)->SearchPrice();
+                    (*itr)->CalReturn();
+                }
+                Beat.Bootstap30_Calculate_All();
+                Meet.Bootstap30_Calculate_All();
+                Miss.Bootstap30_Calculate_All();
 
                     cout<<"\nCalculation for three groups done!\n"<<endl;
 
@@ -217,7 +222,7 @@ int main(int argc, const char * argv[]) {
                            else if(c == '3' )
     {
 
-        if(Beat.getACAR().size()==0){
+        if(Beat.getCAARavg().size()==0){
             //Check if the caculation done.
             cout<<"Please retrive historical price by pressing 1 first.\n";
         }
@@ -249,16 +254,16 @@ int main(int argc, const char * argv[]) {
                                                 case 0: //Beat
                                                     switch (metricType) {
                                                         case 0: //AAR
-                                                            PrintVecotr(Beat.getAAR());
+                                                            PrintVecotr(Beat.getAARavg());
                                                             break;
                                                         case 1:  //CAAR
-                                                        PrintVecotr(Beat.getACAR());
+                                                        PrintVecotr(Beat.getAARstd());
                                                         break;
                                                         case 2: //AARstd
-                                                        PrintVecotr(Beat.getstdAR());
+                                                        PrintVecotr(Beat.getCAARavg());
                                                         break;
                                                         case 3: //CAARstd
-                                                        PrintVecotr(Beat.getstdCAR());
+                                                        PrintVecotr(Beat.getCAARstd());
                                                         break;
                                                         default:
                                                             break;
@@ -267,16 +272,17 @@ int main(int argc, const char * argv[]) {
                                                     case 1: //Meet
                                                         switch (metricType) {
                                                             case 0: //AAR
-                                                                PrintVecotr(Meet.getAAR());
+                                                                PrintVecotr(Meet.getAARavg());
+                                                                
                                                                 break;
                                                             case 1://CAAR
-                                                            PrintVecotr(Meet.getACAR());
+                                                            PrintVecotr(Meet.getAARstd());
                                                             break;
                                                             case 2://AARstd
-                                                            PrintVecotr(Meet.getstdAR());
+                                                            PrintVecotr(Meet.getCAARavg());
                                                             break;
                                                             case 3://CAARstd
-                                                            PrintVecotr(Meet.getstdCAR());
+                                                            PrintVecotr(Meet.getCAARstd());
                                                             break;
                                                             default:
                                                                 break;
@@ -285,16 +291,16 @@ int main(int argc, const char * argv[]) {
                                                 case 2: //Miss
                                                     switch (metricType) {
                                                         case 0:  //AAR
-                                                            PrintVecotr(Miss.getAAR());
+                                                            PrintVecotr(Miss.getAARavg());
                                                             break;
                                                         case 1://CAAR
-                                                        PrintVecotr(Miss.getACAR());
+                                                        PrintVecotr(Miss.getAARstd());
                                                         break;
                                                         case 2://AARstd
-                                                        PrintVecotr(Miss.getstdAR());
+                                                        PrintVecotr(Miss.getCAARavg());
                                                         break;
                                                         case 3://CAARstd
-                                                        PrintVecotr(Miss.getstdCAR());
+                                                        PrintVecotr(Miss.getCAARstd());
                                                         break;
                                                         default:
                                                             break;
@@ -320,13 +326,13 @@ int main(int argc, const char * argv[]) {
     }
  else if (c == '4') {
                 //gnuplot:
-                if(Beat.getACAR().size()==0){
+                if(Beat.getCAARavg().size()==0){
                                    cout<<"Please retrive historical price by pressing 1 first.\n";
                                }
                 else{
-                vector<double> v1 = Beat.getACAR();
-                vector<double> v2 = Meet.getACAR();
-                vector<double> v3 = Miss.getACAR();
+                vector<double> v1 = Beat.getCAARavg();
+                vector<double> v2 = Meet.getCAARavg();
+                vector<double> v3 = Miss.getCAARavg();
                                    Plot(v1, v2,v3);
                                    
                                }
