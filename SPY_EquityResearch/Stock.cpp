@@ -220,7 +220,9 @@ void Stock::SearchPrice(){
                     data.memory = NULL;
                     data.size= 0;
                 }
-                
+                free(data.memory);
+                data.memory = NULL;
+                data.size= 0;
                 if (itr == symbolList.end())
                     break;
                 string urlA = "https://query1.finance.yahoo.com/v7/finance/download/";
@@ -525,6 +527,7 @@ void  searchStocks(map<string,Stock*> pool)
     
     if (handle)
     {string sCookies, sCrumb;
+        
         while (true)
         {
             
@@ -591,14 +594,19 @@ void  searchStocks(map<string,Stock*> pool)
                 data.memory = NULL;
                 data.size= 0;
             }
-            
+            free(data.memory);
+            data.memory = NULL;
+            data.size= 0;
             if (itr == pool.end())
                 break;
             
             string urlA = "https://query1.finance.yahoo.com/v7/finance/download/";
             string symbol = itr->first;
+//            cout<<itr->first<<endl;
             string startTime = getTimeinSeconds(itr->second->getDate_minus_30());
+//            cout<<itr->second->getDate_minus_30()<<endl;
             string endTime = getTimeinSeconds(itr->second->getDetdate_30());
+//            cout<<symbol<<" "<<"start time: "<<startTime<<" endtime "<<endTime<<endl;
             string urlB = "?period1=";
             string urlC = "&period2=";
             string urlD = "&interval=1d&events=history&crumb=";
@@ -640,12 +648,12 @@ void  searchStocks(map<string,Stock*> pool)
                 double  adjClose;
             
                map<string,double> pricemap;
-            cout<<line<<endl;
+//            cout<<line<<endl;
             while ( getline(sData, line) ){
                 
 //                    cout << line << endl;
                 //Date,Open,High,Low,Close,Adj Close,Volume
-                cout<<line<<endl;
+//                cout<<line<<endl;
                 stringstream ss(line);
                 getline(ss,date,',');
                 getline(ss,tempstring,','); //open
@@ -653,7 +661,7 @@ void  searchStocks(map<string,Stock*> pool)
                 getline(ss,tempstring,',');//low
                 getline(ss,tempstring,',');//close
                 getline(ss,adjClosestr,',');//adjclose
-                cout<<"adj str is "<<adjClosestr<<endl;
+//                cout<<"adj str is "<<adjClosestr<<endl;
                 adjClose = stold(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
                 
@@ -662,13 +670,13 @@ void  searchStocks(map<string,Stock*> pool)
             }
             
             
-            cout<<"size of pricemap: "<<pricemap.size()<<endl;
+//            cout<<"size of pricemap: "<<pricemap.size()<<endl;
              itr->second->setPriceMap(pricemap);
             cout<<itr->first<<" searched\n";
-            cout<<"After set,size of price map of stock: 1"<<
-            itr->second->GetPriceMap().size()<<endl;
+//            cout<<"After set,size of price map of stock: "<<
+//            itr->second->GetPriceMap().size();
             itr++;
-            cout<<"start new stock\n";
+//            cout<<"start new stock\n";
         }
         free(data.memory);
         data.size= 0;
