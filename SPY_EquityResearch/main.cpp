@@ -82,7 +82,7 @@ int main(int argc, const char * argv[]) {
             estimateEPS = stod(estimateEPSstr);
             double sdatenum,edatenum;
             // change the time format 2019-01-23 06:00:00 to 2019-01-23T06:00:00
-            datetimezero = datetimezero.substr(0,10)+"T"+datetimezero.substr(11,8);
+//            datetimezero = datetimezero.substr(0,10)+"T"+datetimezero.substr(11,8);
             
             //update the min max date
             sdatenum = (stod(date_minus_30.substr(0,4))*10000) +

@@ -496,7 +496,7 @@ void Index::SearchPrice(){
 
 
 
-void  searchStocks(map<string,Stock*> pool)
+void searchStocks(map<string,Stock*> pool)
 {
 //    string startTime = getTimeinSeconds("2019-04-01T16:00:00");
 //    string endTime = getTimeinSeconds("2019-04-21T16:00:00");
@@ -505,7 +505,7 @@ void  searchStocks(map<string,Stock*> pool)
 //    symbolList.push_back(string("MSFT"));
 //    symbolList.push_back(string("TWTR"));
     map<string,Stock*>::iterator itr = pool.begin();
-
+    map<string,Stock*> newPool;
     struct MemoryStruct data;
     data.memory = NULL;
     data.size = 0;
@@ -679,9 +679,15 @@ void  searchStocks(map<string,Stock*> pool)
             
 //            cout<<"size of pricemap: "<<pricemap.size()<<endl;
              itr->second->setPriceMap(pricemap);
-            cout<<itr->first<<" searched\n";
-//            cout<<"After set,size of price map of stock: "<<
-//            itr->second->GetPriceMap().size();
+            cout<<itr->first<<" searched";
+            if(itr->second->GetPriceMap().size()==61){ // There are 61 days
+                newPool[itr->first] = itr->second;
+                cout<<" and has 61-d prices.\n";
+            }else{
+            cout<<", but has "<<itr->second->GetPriceMap().size()<<"-d prices.";
+//                cout<<itr->second->getDate_minus_30()<<"\n"<<itr->second->getDetdate_30();
+                cout<<"The stock will be removed from the pool. ";
+            }
             itr++;
 //            cout<<"start new stock\n";
         }
@@ -700,5 +706,7 @@ void  searchStocks(map<string,Stock*> pool)
     /* this function releases resources acquired by curl_global_init() */
     curl_global_cleanup();
     cout<<"Search End\n";
+    cout<<"\n-----------------------------------------\n";
+    
 }
 

@@ -106,6 +106,6 @@ public:
     void SearchPrice();//get prices
    
 };
-void  searchStocks(map<string,Stock*> pool);
+void searchStocks(map<string,Stock*> pool);
 
 #endif /* Stock_hpp */
