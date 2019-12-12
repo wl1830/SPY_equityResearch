@@ -8,28 +8,24 @@
 
 #include "Group.hpp"
 #include "VectorCalculation.hpp"
-void Group::Sample(int n){
-    
+Matrix Group::getSampledARm(int n){
+    //n is sample size default 30
+    vector<int> sample_ind;
+    for(int i = 0;i<StockPtrs.size();i++){
+        sample_ind.push_back(i);
+    }
     srand(int(time(NULL)));
     auto rng = default_random_engine {};
-    std::shuffle(begin(StockPtrs), end(StockPtrs), rng);
-    vector<Stock*>::iterator itr;
-    int count=0;
+    std::shuffle(begin(sample_ind), end(sample_ind), rng);
+//    vector<Stock*>::iterator itr;
+    Matrix sample_ar_m;
     
-        for(itr=StockPtrs.begin();itr!=StockPtrs.end();itr++){
-            SampleStockPtrs.push_back(*itr);
-        count++;
-            if(count==n){
-                break;
-            }
+     
+    for(int i =0;i<n;i++){
+            sample_ar_m.push_back(AR_all[i]);
         }
-    cout<<"\nGroup "<<groupName<<" bootstrap: "<<endl;
-    cout<<"The sampled stocks in are"<<endl;
-    for(itr=SampleStockPtrs.begin();itr!=SampleStockPtrs.end();itr++){
-        cout<<(*itr)->getTicker()<<" ";
-    }
-    cout<<endl;
-
+//    cout<<"\nGroup "<<groupName<<" bootstrap. "<<endl;
+    return sample_ar_m;
 }
 
 vector<double> CalavgAxis0(Matrix m){
@@ -46,13 +42,19 @@ vector<double> CalavgAxis0(Matrix m){
 vector<double> CalStdAxis0(Matrix m){
     vector<double> stdV;
     for(int d=0;d<m[0].size();d++){
-            double var = 0.0;
-            double mean = 0.0;
+//            double var = 0.0;
+//            double mean = 0.0;
+        double var = 0.0;
+        double mean = 0.0;
             for(int s=0;s<m.size();s++){
-                mean = (mean*s+m[s][d])/(s+1);
-                var = (var*s+(m[s][d])*(m[s][d]))/(s+1.0);
+                mean = (mean*s+m[s][d])/(s+1.0);
+                var = (var*s+(m[s][d]*m[s][d]))/(s+1.0);
             }
-            stdV.push_back(sqrt(var-mean*mean));
+        if(-mean*mean+var<0){
+            cout<<var;
+            cout<<"\n"<<mean;
+            cout<<"(var-mean*mean)"<<(var-mean*mean)<<"\t";}
+            stdV.push_back(sqrt(-mean*mean+var));
 
     }
     return stdV;
@@ -68,25 +70,25 @@ vector<double> CalStdAxis0(Matrix m){
         }
         return  cuV;
     }
-
-vector<double> Group::CalAARv()
-    {
-    // Used for one bootstrap after calling Boot
-    vector<Stock*>::iterator itr;
-    Matrix ARM; //A matrix for AR of 30 stocks,30* 60
-    for(itr=SampleStockPtrs.begin();itr!=SampleStockPtrs.end();itr++){
-            vector<double> vStock =(*itr)->GetReturnVec();
-            //return of stock for corresponding dates
-            string d1 = (*itr)->GetReturnBeginDate();
-            string d60 = (*itr)->GetReturnEndDate();
-            vector<double> vIndex =indexPtr->GetReturnVec(d1,d60);
-            ARM.push_back((vStock-vIndex)); //AR vector for every stock
+void Printvecotr(vector<double> v){
+    for(int i=0;i<v.size();i++){
+        cout<<v[i]<<"\t";
     }
- 
-    return CalavgAxis0(ARM);   //AAR
-}//60*1
+    cout<<endl;
+}
 
 
+void Group::CalAR_all(){
+    vector<Stock*>::iterator itr;
+    for(itr=StockPtrs.begin();itr!=StockPtrs.end();itr++){
+        vector<double> vStock =(*itr)->GetReturnVec();
+        //return of stock for corresponding dates
+        string d1 = (*itr)->GetReturnBeginDate();
+        string d60 = (*itr)->GetReturnEndDate();
+        vector<double> vIndex =indexPtr->GetReturnVec(d1,d60);
+        AR_all.push_back((vStock-vIndex)); //AR vector for every stock
+    }
+}
 
 // 60*30 //assign to AAR
 
@@ -96,12 +98,13 @@ vector<double> Group::CalAARv()
                             //Return [AAR,CAAR,AARstd,CAARstd], each element is a  60*1 vector
 //
 void Group::Bootstap30_Calculate_All(){
+    CalAR_all();
     for(int i = 0;i<30;i++){
        //For One bootstrap
         // sample 30 stocks get 30*60  AR vector
-        this->Sample();
+        Matrix sampledAR = getSampledARm();
         // take  their AAR(30*1) vector, store  in  AARm matrix, same  for CAAR
-        vector<double> AARv  = this->CalAARv(); //60*1
+        vector<double> AARv  = CalavgAxis0(sampledAR); //60*1
         vector<double> CAARv  = VectoCumu(AARv);//60*1
         AARm.push_back(AARv);
         CAARm.push_back(CAARv);

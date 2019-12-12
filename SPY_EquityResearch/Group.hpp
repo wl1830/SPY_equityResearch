@@ -28,15 +28,18 @@ private:
     vector<Stock*> SampleStockPtrs;
     Matrix AARm;
     Matrix CAARm;
+    Matrix AR_all; //166*61
+//     AR_sample_index; //  30 *61
     vector<double> avgAAR;
     vector<double> avgCAAR;
     vector<double> stdAAR;
     vector<double> stdCAAR;
 public:
-    
+    Matrix getSampledARm(int n=30); //return 30*61 AR matrix
     static Index * indexPtr;
     Group(const string & Name):groupName(Name)
-    {}
+    { 
+    }
     
     void addStock(Stock * stockptr){
         StockPtrs.push_back(stockptr);
@@ -52,7 +55,7 @@ public:
         return groupName;
     }
     
-    
+    void CalAR_all(); //for all stocks
     void Sample(int n =30); //Set SampleStockPtrs
     
     static void IndexSearch_CalReturn(){

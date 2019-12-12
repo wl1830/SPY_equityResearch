@@ -27,6 +27,7 @@ void Equity::CalReturn(){
         returnMap[next(itr) ->first] = stockr;//SR:stock return
     }
     cout<<"Return of "<<ticker <<" calculated"<<endl;
+    
 //    if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
 
 }
@@ -37,18 +38,19 @@ vector<double> Index::GetReturnVec(string date1,string date2)const{
     map<string,double> ::const_iterator itr;
     
     
-    for(itr=returnMap.find(date1);itr!=++returnMap.find(date2);itr++){
+    for(itr=returnMap.find(date1);itr!=next(returnMap.find(date2));itr++){
         returns.push_back(itr->second);
     }
     
     if(returns.size()!=60){
-        cout<<"In the Index::GetReturnVec(string date1,string date2)"<<" Twodates are "<<date1<<" "<<date2<<endl;
+        cout<<"In the Index::GetReturnVec(string date1,string date2)"<<" Two dates are "<<date1<<" "<<date2<<endl;
         cout<<"There are "<<returns.size()<<" returns for index"<<endl;}
 //    else{cout<<"60 days for index";
 //
 //    }
     return returns;
 }
+
 vector<double> Stock::GetReturnVec(){
     
     vector<double> returns;

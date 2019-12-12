@@ -215,7 +215,7 @@ int main(int argc, const char * argv[]) {
                         cout<<endl<<"Date\tAdjClose:"<<endl;
     //                    for (map<string,double>::SearchPrice()) cout<<itr->first<<" "<<itr->second <<endl;
                         // Search and print prices
-                        stkptr->SearchPrice();
+                        
                         PrintMap(stkptr->GetPriceMap());
                         }
                 
