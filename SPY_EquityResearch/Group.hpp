@@ -5,19 +5,26 @@
 //  Created by 刘唯婷婷 on 12/2/19.
 //  Copyright © 2019 NYU. All rights reserved.
 //
-
+#include <sys/time.h>
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
 #ifndef Group_hpp
 #define Group_hpp
 #include <string>
 #include <stdio.h>
 #include <vector>
+#include <unistd.h>
+#include <iostream>
+
 #include "Stock.hpp"
 #include <algorithm>
 #include <random>
 #include  <vector>
 #include <cmath>
 #include "VectorCalculation.hpp"
-
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 typedef vector<vector<double>> Matrix;

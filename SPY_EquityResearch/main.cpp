@@ -60,7 +60,7 @@ int main(int argc, const char * argv[]) {
             return 1;
         }
         getline(infile, line);
-        cout<< "Read the following information: ";
+        cout<< "\n\n\n\nStart to read the following information: \n";
         cout << line << endl;
         double minDatenum =20191231;
         double maxDatenum = 20190101;
