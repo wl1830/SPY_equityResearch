@@ -64,7 +64,12 @@ public:
     double getSurprise()const{
         return surprise;
     }
-    
+    void setPriceMap(map<string,double> m){
+        map<string,double>::iterator  itr;
+        for(itr= m.begin();itr!=m.end();itr++){
+            priceMap[itr->first] = itr->second;
+        }
+    }
     
     string getDate_minus_30()const{
         
@@ -101,6 +106,6 @@ public:
     void SearchPrice();//get prices
    
 };
-
+void  searchStocks(map<string,Stock*> pool);
 
 #endif /* Stock_hpp */

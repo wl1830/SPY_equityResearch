@@ -172,11 +172,13 @@ int main(int argc, const char * argv[]) {
                 Group::indexPtr->SearchPrice();
                 Group::indexPtr->CalReturn();
                 cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
+                 searchStocks(pool);
                 for(vector<Stock*>::iterator itr=Stocks.begin();itr!=Stocks.end();itr++){
-                    
-                    (*itr)->SearchPrice();
+
+//                    /(*itr)->SearchPrice();
                     (*itr)->CalReturn();
                 }
+                
                 Beat.Bootstap30_Calculate_All();
                 Meet.Bootstap30_Calculate_All();
                 Miss.Bootstap30_Calculate_All();
@@ -363,6 +365,6 @@ int main(int argc, const char * argv[]) {
     // Delete stocks and spy
     
     
-    
+ 
         }
 
