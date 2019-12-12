@@ -50,11 +50,12 @@ vector<double> CalStdAxis0(Matrix m){
                 mean = (mean*s+m[s][d])/(s+1.0);
                 var = (var*s+(m[s][d]*m[s][d]))/(s+1.0);
             }
-        if(-mean*mean+var<0){
-            cout<<var;
-            cout<<"\n"<<mean;
-            cout<<"(var-mean*mean)"<<(var-mean*mean)<<"\t";}
+//        if(-mean*mean+var<0){
+//            cout<<var;
+//            cout<<"\n"<<mean;
+//            cout<<"(var-mean*mean)"<<(var-mean*mean)<<"\t";}
             stdV.push_back(sqrt(-mean*mean+var));
+        
 
     }
     return stdV;
