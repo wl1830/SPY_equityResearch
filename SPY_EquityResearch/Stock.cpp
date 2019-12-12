@@ -26,7 +26,12 @@ void Equity::CalReturn(){
         double stockr = (next(itr) ->second - itr->second)/(itr->second);
         returnMap[next(itr) ->first] = stockr;//SR:stock return
     }
-    cout<<"Return of "<<ticker <<" calculated"<<endl;
+//
+    if(returnMap.size()!=60){
+        
+        cout<<"The "<<ticker<<" has "<<returnMap.size()<<" returns."<<endl;
+        
+    }
     
 //    if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
 
