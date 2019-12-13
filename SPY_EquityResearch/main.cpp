@@ -41,7 +41,7 @@ int main(int argc, const char * argv[]) {
     
     // insert code here...
     // Read in ticker, time, EPS and EEPS
-
+    
         ifstream infile;
        /*
         If  cannt read, In Xcode go to Product > Scheme > Edit Scheme > Run test (on the right) > Options (middle top)
@@ -64,7 +64,7 @@ int main(int argc, const char * argv[]) {
         cout << line << endl;
         double minDatenum =20191231;
         double maxDatenum = 20190101;
-        vector<Stock*> Stocks;
+//        vector<Stock*> Stocks;
         map<string,Stock*> pool;
         vector<double> Surprises;
         
@@ -98,7 +98,7 @@ int main(int argc, const char * argv[]) {
             // Create  stock objects
             Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
             Surprises.push_back(stock->getSurprise());
-            Stocks.push_back(stock);
+//            Stocks.push_back(stock);
             pool[ticker] =stock;
         }
 
@@ -120,18 +120,18 @@ int main(int argc, const char * argv[]) {
     Group Miss("Miss");
     
     // store the stock pointers into the Group objects according to surprise value
-    vector<Stock*>::iterator Stocksitr;
-    for(Stocksitr=Stocks.begin();Stocksitr!=Stocks.end();Stocksitr++)
+    map<string,Stock*>::iterator Stocksitr;
+    for(Stocksitr=pool.begin();Stocksitr!=pool.end();Stocksitr++)
     {
 //        (*Stocksitr)->SearchPrice();
 //        (*Stocksitr)->CalReturn();
-        if((*Stocksitr)->getSurprise()>Thres2){
-            Beat.addStock(*Stocksitr);
+        if((Stocksitr->second)->getSurprise()>Thres2){
+            Beat.addStock(Stocksitr->second);
         }
-        else if ((*Stocksitr)->getSurprise()>Thres1){
-            Meet.addStock(*Stocksitr);
+        else if ((Stocksitr->second)->getSurprise()>Thres1){
+            Meet.addStock(Stocksitr->second);
         }
-        else{ Miss.addStock(*Stocksitr);
+        else{ Miss.addStock(Stocksitr->second);
         }
         
     }
@@ -173,10 +173,10 @@ int main(int argc, const char * argv[]) {
                 Group::indexPtr->CalReturn();
                 cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
                  searchStocks(pool);
-                for(vector<Stock*>::iterator itr=Stocks.begin();itr!=Stocks.end();itr++){
+                for(map<string,Stock*>::iterator itr=pool.begin();itr!=pool.end();itr++){
 
 //                    /(*itr)->SearchPrice();
-                    (*itr)->CalReturn();
+                    (itr->second)->CalReturn();
                 }
                 
                 Beat.Bootstap30_Calculate_All();
@@ -349,21 +349,19 @@ int main(int argc, const char * argv[]) {
     }
             
 
-
     
-
+    // Deallocate stocks and spy
     
-    for(Stock* stk_ptr:Stocks){
-        delete stk_ptr;
+    map<std::string, Stock*>::iterator itr = pool.begin();
+    
+    if(itr!=pool.end()){
+        delete itr->second;
+        itr->second = NULL;
     }
-    
-   Stocks.clear();
-   delete Group::indexPtr;
-   Group::indexPtr = NULL;
+    pool.clear();
+    delete Group::indexPtr;
+    Group::indexPtr = NULL;
 
-    
-    // Delete stocks and spy
-    
     
  
         }

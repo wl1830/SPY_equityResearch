@@ -104,29 +104,27 @@ void Printvecotr(vector<double> v){
 void Group::CalAR_all(){
     vector<Stock*>::iterator itr;
     for(itr=StockPtrs.begin();itr!=StockPtrs.end();itr++){
+        
+        // return of each stock
         vector<double> vStock =(*itr)->GetReturnVec();
-        //return of stock for corresponding dates
+        //return of index for corresponding dates
         string d1 = (*itr)->GetReturnBeginDate();
         string d60 = (*itr)->GetReturnEndDate();
         vector<double> vIndex =indexPtr->GetReturnVec(d1,d60);
+        // store the abnormal 
         AR_all.push_back((vStock-vIndex)); //AR vector for every stock
     }
 }
 
-// 60*30 //assign to AAR
 
-
-
-
-                            //Return [AAR,CAAR,AARstd,CAARstd], each element is a  60*1 vector
-//
 void Group::Bootstap30_Calculate_All(){
+    // Calculate Abnormal return for all stocks in the group and store it in the AR_all matrix (165*60) if there are 165 stocks
     CalAR_all();
+    // Bootstrapp for 30 times
     for(int i = 0;i<30;i++){
        //For One bootstrap
         // sample 30 stocks get 30*60  AR vector
-        
-         Matrix sampledAR = getSampledARm();
+        Matrix sampledAR = getSampledARm();
         // take  their AAR(30*1) vector, store  in  AARm matrix, same  for CAAR
         vector<double> AARv  = CalavgAxis0(sampledAR); //60*1
         vector<double> CAARv  = VectoCumu(AARv);//60*1
