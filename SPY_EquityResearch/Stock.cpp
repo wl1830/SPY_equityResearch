@@ -108,6 +108,13 @@ string getTimeinSeconds(string Time)
     }
 }
 
+void Equity::setPriceMap(map<string,double> m){
+    map<string,double>::iterator  itr;
+    for(itr= m.begin();itr!=m.end();itr++){
+        priceMap[itr->first] = itr->second;
+    }
+}
+
 void Stock::SearchPrice(){
     try{
         string startTime = getTimeinSeconds(date_minus_30);
@@ -646,14 +653,14 @@ void searchEquities(map<string,Equity*> pool)
             
              itr->second->setPriceMap(pricemap);
             cout<<itr->first<<" searched";
-            if(itr->first=="SPY"){
-                cout<<" and has "<<itr->second->GetPriceMap().size()<<"-d prices.\n";
+            if(pricemap.size()==61){
+                           cout<<" with 61-day prices\n";
+                       }
+            else if(itr->first=="SPY"){
+                cout<<" with "<<pricemap.size()<<"-day prices\n";
             }
-            else if(itr->second->GetPriceMap().size()==61){
-                cout<<" and has 61-d prices.\n";
-            }else{
-            cout<<", but has "<<itr->second->GetPriceMap().size()<<"-d prices.";
-                cout<<"The stock will be removed from the pool. ";
+           else{
+                cout<<", but has "<<pricemap.size()<<"-day prices\n";
             }
             itr++;
         }
@@ -671,8 +678,8 @@ void searchEquities(map<string,Equity*> pool)
 
     /* this function releases resources acquired by curl_global_init() */
     curl_global_cleanup();
-    cout<<"Search End\n";
-    cout<<"\n-----------------------------------------\n";
+    cout<<"\nSearch done!\n";
+//    cout<<"\n-----------------------------------------\n";
     
 }
 

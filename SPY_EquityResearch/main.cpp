@@ -20,7 +20,7 @@
 
 
 using namespace std;
-
+using namespace std::chrono;
 //initialize the static variable indexitr
 Index * Group::indexPtr = nullptr;
 
@@ -153,33 +153,38 @@ int main(int argc, const char * argv[]) {
 
         cout << endl << endl << "--------------------------------menu--------------------------------" << endl << endl
         << "Please press 1 to retrieve historical all stocks."  << endl
-        << "Please press 2 to pull information for one stock from one group" << endl
-        << "Please press 3(after 1)to show AAR, CAAR, AARstd or CAARstd for one group."  << endl
-        << "Please press 4(after 1) to show the Excel graph with CAAR for all 3 groups." << endl
+        << "Please press 2 to pull information for one stock or index" << endl
+        << "Please (after 1) press 3 to show AAR, CAAR, AARstd or CAARstd for a group."  << endl
+        << "Please (after 1) press 4 to plot average CAAR for all groups." << endl
         << "Please press 0 to exit the program." << endl << endl;
         
         while (true)
         {
             char c;
-            cout<<"select an option:";
+            cout<<"Select an option:";
             c = getchar();
             if (c == '1')
             {
-                cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-                
+                cout<<"\nStart to search price for all stocks....\n\n";
                 // Retrive historical prices for index and all stocks, store in the PriceMap of each Equity object
+                auto start = high_resolution_clock::now();
                 searchEquities(poolAll);
-                
+                auto stop = high_resolution_clock::now();
+                auto duration = duration_cast<seconds>(stop - start);
+                cout <<"Time used for searching historical prices: " << duration.count() <<" s.\n"<< endl;
                 // Calculate daily return for index and all stocks, store in the returnMap of each Equity object
                 for(map<string,Equity*>::iterator itr=poolAll.begin();itr!=poolAll.end();itr++){
                     (itr->second)->CalReturn();
                 }
                 // Bootstrap 30 times and aggregate result
+                start = high_resolution_clock::now();
                 Beat.Bootstap30_Calculate_All();
                 Meet.Bootstap30_Calculate_All();
                 Miss.Bootstap30_Calculate_All();
-                cout<<"\nCalculation for three groups done!\n"<<endl;
-                
+                stop = high_resolution_clock::now();
+                cout<<"\nCalculation for three groups done!"<<endl;
+                auto duration2 = duration_cast<microseconds>(stop - start);
+                cout <<"\nTime used for bootstrap and calculation: " << duration2.count()<<" * 10^-6 s.\n"<< endl;
                 // Pop calculations into a matrix(3*4) of vecotors(60*1)
                 Results.push_back({Beat.getAARavg(),Beat.getAARstd(),Beat.getCAARavg(),Beat.getCAARstd()}); // Beat results
                 Results.push_back({Meet.getAARavg(),Meet.getAARstd(),Meet.getCAARavg(),Meet.getCAARstd()}); // Meet results
@@ -194,7 +199,7 @@ int main(int argc, const char * argv[]) {
                     if ( poolStocks.find(ticker) == poolStocks.end() ){
                         // Index
                         if(ticker=="SPY"){
-                            cout<<endl<<"Date\tAdjClose:"<<endl;
+                            cout<<endl<<"Date\t\tAdjClose:"<<endl;
                             PrintMap(Group::indexPtr->GetPriceMap());
                         }else{cout<< endl<<"Stock not included."<<endl;}
                             }
@@ -331,10 +336,9 @@ int main(int argc, const char * argv[]) {
         
     
         // Free the memory of stocks and SPY index
-        map<std::string, Stock*>::iterator itr = poolStocks.begin();
-        for(;itr!=poolStocks.end();itr++){
-            delete itr->second;
-            itr->second = NULL;
+        for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++){
+            delete Stocksitr->second;
+            Stocksitr->second = NULL;
             }
         poolStocks.clear();
         delete Group::indexPtr;

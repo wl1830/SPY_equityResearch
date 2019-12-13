@@ -17,8 +17,8 @@ class Equity{
 private:
     string ticker;
 protected:
-    map<string,double>priceMap;
-    map<string,double>returnMap;
+    map<string,double> priceMap;
+    map<string,double> returnMap;
 public:
     Equity(const string &Ticker){
         ticker  = Ticker;
@@ -28,24 +28,20 @@ public:
     }
     string getTicker() const{
         return ticker;
-        
     }
-    void SearchPrice();
-    void CalReturn();
-   virtual  string getSearchStartDate()const=0;
+    void CalReturn(); // Calculate daily return from priceMap, store in returnMap
+    
+    virtual  string getSearchStartDate()const=0;
     virtual string getSearchEndDate()const=0;
-    void setPriceMap(map<string,double> m){
-        map<string,double>::iterator  itr;
-        for(itr= m.begin();itr!=m.end();itr++){
-            priceMap[itr->first] = itr->second;
-        }
-    }
+    
+    void setPriceMap(map<string,double> m);
+    
 };
 
 class Stock:public Equity{
 private:
-    string date0,date_minus_30,date_30; //only date
-    double EPS,EEPS,surprise;
+    string date0,date_minus_30,date_30;
+    double EPS,EEPS;
     
 public:
     string GetReturnBeginDate()const{
@@ -55,17 +51,17 @@ public:
         return date_30;
     }
     
-    Stock(const string &Ticker_,const string &datezero_,const string &date_minus_30_,const string &date_30_,double EPS_,double EEPS_):Equity(Ticker_),EPS(EPS_),EEPS(EEPS_),date0( datezero_),date_minus_30( date_minus_30_),date_30( date_30_)
-    {
-//        cout<<"Default constructor of stock"<<endl;
-        if (EEPS == 0) {surprise  = (EPS- EEPS)/EPS;}
-        else surprise  = (EPS- EEPS)/EEPS;
-
-    }
+    Stock(const string &Ticker_,
+          const string &datezero_,const string &date_minus_30_,const string &date_30_,
+          double EPS_,double EEPS_):
+    Equity(Ticker_),EPS(EPS_),EEPS(EEPS_),
+    date0( datezero_),date_minus_30( date_minus_30_),date_30( date_30_){}
+    
     vector<double> GetReturnVec();
 
     double getSurprise()const{
-        return surprise;
+        if (EEPS == 0) {return (EPS- EEPS)/EPS;}
+        else return (EPS- EEPS)/EEPS;
     }
 
     
@@ -101,20 +97,17 @@ class Index:public Equity{
 private:
     string startdate,enddate;
 public:
-    Index(const string &Ticker_,const string & start,const string & end):Equity(Ticker_),startdate(start),enddate(end){}
+    Index(const string &Ticker_,const string & start,const string & end):
+    Equity(Ticker_),startdate(start),enddate(end){}
     
-    void Print(){
-        cout<<startdate<<" "<<enddate<<endl;
-    }
     vector<double> GetReturnVec(string date1,string date2)const;
-    void SearchPrice();//get prices
-    
     string getSearchStartDate()const{
         return startdate;
     }
     string getSearchEndDate()const{
         return enddate;
     }
+    void SearchPrice();
 };
 
 void searchEquities(map<string,Equity*> pool);
