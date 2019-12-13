@@ -311,7 +311,9 @@ int main(int argc, const char * argv[]) {
                 vector<double> v1 = Results[0][2];
                 vector<double> v2 = Results[1][2];
                 vector<double> v3 = Results[2][2];
-                                   Plot(v1, v2,v3);
+                                  
+//                    Plot(v1, v2,v3);
+                     PlotVectors(v1, v2,v3);
                                    
                                }
 

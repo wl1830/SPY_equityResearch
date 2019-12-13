@@ -45,12 +45,10 @@ public:
 class Stock:public Equity{
 private:
     string date0,date_minus_30,date_30; //only date
-//    string datetime0; //date+time
     double EPS,EEPS,surprise;
     
 public:
     string GetReturnBeginDate()const{
-        map<string,double>::iterator itr;
         return returnMap.begin()->first;
     }
     string GetReturnEndDate()const{
@@ -64,11 +62,8 @@ public:
         else surprise  = (EPS- EEPS)/EEPS;
 
     }
-    vector<double> GetReturnVec ();
-    void Print(){
-        cout<<getTicker()<< " "<< date0<<" "<< EPS<<" "<<EEPS<<endl;
-        cout<<surprise<<endl;
-    }
+    vector<double> GetReturnVec();
+
     double getSurprise()const{
         return surprise;
     }
