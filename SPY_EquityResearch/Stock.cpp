@@ -127,13 +127,16 @@ string getTimeinSeconds(string Time)
 void Stock::SearchPrice(){
     try{
         string startTime = getTimeinSeconds(date_minus_30);
+        
     
         string endTime = getTimeinSeconds(date_30);
+        
         vector<string> symbolList;
         symbolList.push_back(string(getTicker()));
         vector<string>::iterator itr = symbolList.begin();
     
         struct MemoryStruct data;
+        
         data.memory = NULL;
         data.size = 0;
     
@@ -177,6 +180,7 @@ void Stock::SearchPrice(){
     
                     curl_easy_setopt(handle, CURLOPT_ENCODING, "");
                     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
+                    
                     curl_easy_setopt(handle, CURLOPT_WRITEDATA, fp);
                     result = curl_easy_perform(handle);
                     fclose(fp);
@@ -191,6 +195,7 @@ void Stock::SearchPrice(){
     
                     
                     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data2);
+                    
                     curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)&data);
     
                     /* perform, then store the expected code in 'result'*/
@@ -257,6 +262,7 @@ void Stock::SearchPrice(){
               
                 }
                 curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data2);
+                
                 curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)&data);
                 result = curl_easy_perform(handle);
     
@@ -496,7 +502,7 @@ void Index::SearchPrice(){
 
 
 
-void searchStocks(map<string,Stock*> pool)
+void searchEquities(map<string,Equity*> pool)
 {
 //    string startTime = getTimeinSeconds("2019-04-01T16:00:00");
 //    string endTime = getTimeinSeconds("2019-04-21T16:00:00");
@@ -504,8 +510,8 @@ void searchStocks(map<string,Stock*> pool)
 //    symbolList.push_back(string("AMZN"));
 //    symbolList.push_back(string("MSFT"));
 //    symbolList.push_back(string("TWTR"));
-    map<string,Stock*>::iterator itr = pool.begin();
-    map<string,Stock*> newPool;
+    map<string,Equity*>::iterator itr = pool.begin();
+    map<string,Equity*> newPool;
     struct MemoryStruct data;
     data.memory = NULL;
     data.size = 0;
@@ -610,9 +616,9 @@ void searchStocks(map<string,Stock*> pool)
             string urlA = "https://query1.finance.yahoo.com/v7/finance/download/";
             string symbol = itr->first;
 //            cout<<itr->first<<endl;
-            string startTime = getTimeinSeconds(itr->second->getDate_minus_30());
+            string startTime = getTimeinSeconds(itr->second->getSearchStartDate());
 //            cout<<itr->second->getDate_minus_30()<<endl;
-            string endTime = getTimeinSeconds(itr->second->getDetdate_30());
+            string endTime = getTimeinSeconds(itr->second->getSearchEndDate());
 //            cout<<symbol<<" "<<"start time: "<<startTime<<" endtime "<<endTime<<endl;
             string urlB = "?period1=";
             string urlC = "&period2=";
@@ -680,8 +686,11 @@ void searchStocks(map<string,Stock*> pool)
 //            cout<<"size of pricemap: "<<pricemap.size()<<endl;
              itr->second->setPriceMap(pricemap);
             cout<<itr->first<<" searched";
-            if(itr->second->GetPriceMap().size()==61){ // There are 61 days
-                newPool[itr->first] = itr->second;
+            if(itr->first=="SPY"){
+                cout<<" and has "<<itr->second->GetPriceMap().size()<<"-d prices.\n";
+            }
+            else if(itr->second->GetPriceMap().size()==61){ // There are 61 days
+//                newPool[itr->first] = itr->second;
                 cout<<" and has 61-d prices.\n";
             }else{
             cout<<", but has "<<itr->second->GetPriceMap().size()<<"-d prices.";
@@ -709,4 +718,8 @@ void searchStocks(map<string,Stock*> pool)
     cout<<"\n-----------------------------------------\n";
     
 }
+
+
+
+
 

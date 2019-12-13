@@ -18,6 +18,7 @@
 #include <algorithm> //for std::sort
 #include "gnuplot.hpp"
 
+
 using namespace std;
 
 //initialize the static variable indexitr
@@ -65,7 +66,8 @@ int main(int argc, const char * argv[]) {
         double minDatenum =20191231;
         double maxDatenum = 20190101;
 //        vector<Stock*> Stocks;
-        map<string,Stock*> pool;
+        map<string,Stock*> poolStocks;
+        map<string,Equity*> poolAll;
         vector<double> Surprises;
         
         while (getline(infile,line)){
@@ -99,7 +101,8 @@ int main(int argc, const char * argv[]) {
             Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
             Surprises.push_back(stock->getSurprise());
 //            Stocks.push_back(stock);
-            pool[ticker] =stock;
+            poolStocks[ticker] =stock;
+            poolAll[ticker] =stock;
         }
 
     infile.close();
@@ -121,7 +124,7 @@ int main(int argc, const char * argv[]) {
     
     // store the stock pointers into the Group objects according to surprise value
     map<string,Stock*>::iterator Stocksitr;
-    for(Stocksitr=pool.begin();Stocksitr!=pool.end();Stocksitr++)
+    for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++)
     {
 //        (*Stocksitr)->SearchPrice();
 //        (*Stocksitr)->CalReturn();
@@ -151,7 +154,7 @@ int main(int argc, const char * argv[]) {
     
     // Create SPY index and add it to 3 groups
      Group::indexPtr = new Index("SPY",minDate,maxDate);
-     
+     poolAll["SPY"] =Group::indexPtr;
     
 // Menu
 
@@ -169,13 +172,13 @@ int main(int argc, const char * argv[]) {
             c = getchar();
             if (c == '1')
             {
-                Group::indexPtr->SearchPrice();
-                Group::indexPtr->CalReturn();
+//                Group::indexPtr->SearchPrice();
+                
                 cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-                 searchStocks(pool);
-                for(map<string,Stock*>::iterator itr=pool.begin();itr!=pool.end();itr++){
-
-//                    /(*itr)->SearchPrice();
+//                 searchStocks(pool);
+                searchEquities(poolAll);
+//                Group::indexPtr->CalReturn();
+                for(map<string,Equity*>::iterator itr=poolAll.begin();itr!=poolAll.end();itr++){
                     (itr->second)->CalReturn();
                 }
                 
@@ -194,7 +197,7 @@ int main(int argc, const char * argv[]) {
                 cin>>ticker;
             
 //                   // Not a stock
-                    if ( pool.find(ticker) == pool.end() ){
+                    if ( poolStocks.find(ticker) == poolStocks.end() ){
                         //check if it is a index
                         if(ticker=="SPY"){
                             cout<<endl<<"Date\tAdjClose:"<<endl;
@@ -203,13 +206,13 @@ int main(int argc, const char * argv[]) {
                         else{cout<< endl<<"Stock not included."<<endl;}
                         }
                     else { //Normal stock
-                        Stock* stkptr = pool[ticker];
+                        Stock* stkptr = poolStocks[ticker];
                         cout<<"Ticker:"<<stkptr->getTicker()<<endl;
-                        cout<<"Start day:"<<stkptr->getDate_minus_30()<<endl;
-                        cout<<"End day:"<<stkptr->getDetdate_30()<<endl;
-                        cout<<"Announcement date:"<<stkptr->getDatezero()<<endl;
-                        cout<<"Stock Estimated EPS"<<stkptr->getEstimateEPS()<<endl;
-                        cout<<"Stock actual EPS:"<<stkptr->getActualEPS()<<endl;
+                        cout<<"Start day: "<<stkptr->getDate_minus_30()<<endl;
+                        cout<<"End day: "<<stkptr->getDetdate_30()<<endl;
+                        cout<<"Announcement date: "<<stkptr->getDatezero()<<endl;
+                        cout<<"Stock Estimated EPS: "<<stkptr->getEstimateEPS()<<endl;
+                        cout<<"Stock actual EPS: "<<stkptr->getActualEPS()<<endl;
                         cout<<"Surprise:"<<stkptr->getSurprise()<<endl;
     //                    map<string,double>price = priceMap(ticker);
                         cout<<endl<<"Date\tAdjClose:"<<endl;
@@ -351,14 +354,16 @@ int main(int argc, const char * argv[]) {
 
     
     // Deallocate stocks and spy
+
     
-    map<std::string, Stock*>::iterator itr = pool.begin();
-    
-    if(itr!=pool.end()){
+
+    map<std::string, Stock*>::iterator itr = poolStocks.begin();
+    if(itr!=poolStocks.end()){
         delete itr->second;
         itr->second = NULL;
     }
-    pool.clear();
+    poolStocks.clear();
+    poolAll.clear();
     delete Group::indexPtr;
     Group::indexPtr = NULL;
 

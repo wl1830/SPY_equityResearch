@@ -32,6 +32,14 @@ public:
     }
     void SearchPrice();
     void CalReturn();
+   virtual  string getSearchStartDate()const=0;
+    virtual string getSearchEndDate()const=0;
+    void setPriceMap(map<string,double> m){
+        map<string,double>::iterator  itr;
+        for(itr= m.begin();itr!=m.end();itr++){
+            priceMap[itr->first] = itr->second;
+        }
+    }
 };
 
 class Stock:public Equity{
@@ -64,12 +72,7 @@ public:
     double getSurprise()const{
         return surprise;
     }
-    void setPriceMap(map<string,double> m){
-        map<string,double>::iterator  itr;
-        for(itr= m.begin();itr!=m.end();itr++){
-            priceMap[itr->first] = itr->second;
-        }
-    }
+
     
     string getDate_minus_30()const{
         
@@ -77,6 +80,14 @@ public:
    }
     string getDetdate_30()const{
         return date_30;
+    }
+    string getSearchStartDate()const{
+         
+        return date_minus_30;
+    }
+    string getSearchEndDate()const{
+        return date_30;
+        
     }
     string getDatezero()const{
         return date0;
@@ -104,8 +115,16 @@ public:
     }
     vector<double> GetReturnVec(string date1,string date2)const;
     void SearchPrice();//get prices
-   
+    
+    string getSearchStartDate()const{
+        return startdate;
+    }
+    string getSearchEndDate()const{
+        return enddate;
+    }
 };
-void searchStocks(map<string,Stock*> pool);
+
+void searchEquities(map<string,Equity*> pool);
+
 
 #endif /* Stock_hpp */
