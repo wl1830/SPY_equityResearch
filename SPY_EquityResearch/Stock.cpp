@@ -21,48 +21,35 @@ using namespace std;
 
 void Equity::CalReturn(){
     map<string,double> ::iterator itr;
-    
     for (itr = priceMap.begin(); itr!= prev(priceMap.end());itr++){
         double stockr = (next(itr) ->second - itr->second)/(itr->second);
         returnMap[next(itr) ->first] = stockr;//SR:stock return
     }
-//
-    if(returnMap.size()!=60){
-        
-        cout<<"The "<<ticker<<" has "<<returnMap.size()<<" returns."<<endl;
-        
-    }
-    
-//    if(returnMap.size()!=60){cout<<"Warning!  There are "<<returnMap.size()<<" days"<<endl;}
-
 }
 
 
 vector<double> Index::GetReturnVec(string date1,string date2)const{
     vector<double> returns;
     map<string,double> ::const_iterator itr;
-    
-    
+
     for(itr=returnMap.find(date1);itr!=next(returnMap.find(date2));itr++){
         returns.push_back(itr->second);
     }
-    
+    // Give a warning if there are not 60 returns
     if(returns.size()!=60){
         cout<<"In the Index::GetReturnVec(string date1,string date2)"<<" Two dates are "<<date1<<" "<<date2<<endl;
-        cout<<"There are "<<returns.size()<<" returns for index"<<endl;}
-//    else{cout<<"60 days for index";
-//
-//    }
+        cout<<"There are "<<returns.size()<<" returns for index"<<endl;
+    }
     return returns;
 }
 
 vector<double> Stock::GetReturnVec(){
-    
     vector<double> returns;
     map<string,double> ::iterator itr;
     for(itr=returnMap.begin();itr!=returnMap.end();itr++){
         returns.push_back(itr->second);
     }
+    // Give a warning if there are not 60 returns
     if(returns.size()!=60){cout<<"There are"<<returns.size()<<" returns"<<endl;}
     return returns;
 }
@@ -111,11 +98,8 @@ string getTimeinSeconds(string Time)
     char time[100];
     memset(time, 0, 100);
     if (ssTime >> std::get_time(&t, "%Y-%m-%dT"))
-    {
-//        cout << std::put_time(&t, "%c %Z") << "\n"   << std::mktime(&t) << "\n";
-               
-        sprintf (time, "%ld", mktime(&t));
-        return string(time);
+    {sprintf (time, "%ld", mktime(&t));
+    return string(time);
     }
     else
     {
@@ -277,27 +261,21 @@ void Stock::SearchPrice(){
                 sData.str(data.memory);
                 string line;
                 getline(sData, line);
-//                cout << line << endl;
                 string date,tempstring,adjClosestr;
                 double  adjClose;
                 while ( getline(sData, line) ){
-//                    cout << line << endl;
                 //Date,Open,High,Low,Close,Adj Close,Volume
                 stringstream ss(line);
                 getline(ss,date,',');
-                getline(ss,tempstring,','); //open
+                getline(ss,tempstring,',');//open
                 getline(ss,tempstring,',');//high
                 getline(ss,tempstring,',');//low
                 getline(ss,tempstring,',');//close
                 getline(ss,adjClosestr,',');//adjclose
-                adjClose = stold(adjClosestr); //string to long double
+                adjClose = stod(adjClosestr); //string to double
                 getline(ss,tempstring,',');//volume
                 
                 priceMap[date] = adjClose;
-//                    cout<<priceMap[date];
-                    
-                
-                    
                 
                 }
                 itr++;
@@ -504,12 +482,6 @@ void Index::SearchPrice(){
 
 void searchEquities(map<string,Equity*> pool)
 {
-//    string startTime = getTimeinSeconds("2019-04-01T16:00:00");
-//    string endTime = getTimeinSeconds("2019-04-21T16:00:00");
-//    vector<string> symbolList;
-//    symbolList.push_back(string("AMZN"));
-//    symbolList.push_back(string("MSFT"));
-//    symbolList.push_back(string("TWTR"));
     map<string,Equity*>::iterator itr = pool.begin();
     map<string,Equity*> newPool;
     struct MemoryStruct data;
@@ -537,9 +509,10 @@ void searchEquities(map<string,Equity*> pool)
     handle = curl_easy_init();
 
     /* if everything's all right with the easy handle... */
-    
+//     string sCookies, sCrumb;
     if (handle)
-    {string sCookies, sCrumb;
+    {
+        string sCookies, sCrumb;
         
         while (true)
         {
@@ -566,8 +539,7 @@ void searchEquities(map<string,Equity*> pool)
 //                {
 //                    /* if errors have occurred, tell us what is wrong with 'result'*/
 //                    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
-////                    pool.erase(itr->first);
-////                    return 1;
+
 //                }
 
                 curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data2);
@@ -581,7 +553,7 @@ void searchEquities(map<string,Equity*> pool)
 //                {
 //                    /* if errors have occured, tell us what is wrong with 'result'*/
 //                    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
-////                    pool.erase(itr->first);
+
 //                }
 
                 char cKey[] = "CrumbStore\":{\"crumb\":\"";
@@ -615,11 +587,8 @@ void searchEquities(map<string,Equity*> pool)
             
             string urlA = "https://query1.finance.yahoo.com/v7/finance/download/";
             string symbol = itr->first;
-//            cout<<itr->first<<endl;
             string startTime = getTimeinSeconds(itr->second->getSearchStartDate());
-//            cout<<itr->second->getDate_minus_30()<<endl;
             string endTime = getTimeinSeconds(itr->second->getSearchEndDate());
-//            cout<<symbol<<" "<<"start time: "<<startTime<<" endtime "<<endTime<<endl;
             string urlB = "?period1=";
             string urlC = "&period2=";
             string urlD = "&interval=1d&events=history&crumb=";
@@ -656,17 +625,12 @@ void searchEquities(map<string,Equity*> pool)
                 sData.str(data.memory);
                 string line;
                 getline(sData, line);
-//                cout << line << endl;
                 string date,tempstring,adjClosestr;
                 double  adjClose;
             
                map<string,double> pricemap;
-//            cout<<line<<endl;
             while ( getline(sData, line) ){
                 
-//                    cout << line << endl;
-                //Date,Open,High,Low,Close,Adj Close,Volume
-//                cout<<line<<endl;
                 stringstream ss(line);
                 getline(ss,date,',');
                 getline(ss,tempstring,','); //open
@@ -674,35 +638,28 @@ void searchEquities(map<string,Equity*> pool)
                 getline(ss,tempstring,',');//low
                 getline(ss,tempstring,',');//close
                 getline(ss,adjClosestr,',');//adjclose
-//                cout<<"adj str is "<<adjClosestr<<endl;
-                adjClose = stold(adjClosestr); //string to long double
+                adjClose = stod(adjClosestr); //string to long double
                 getline(ss,tempstring,',');//volume
                 
                 pricemap[date]= adjClose;
-//                    cout<<date<<" "<<adjClose;
             }
             
-            
-//            cout<<"size of pricemap: "<<pricemap.size()<<endl;
              itr->second->setPriceMap(pricemap);
             cout<<itr->first<<" searched";
             if(itr->first=="SPY"){
                 cout<<" and has "<<itr->second->GetPriceMap().size()<<"-d prices.\n";
             }
-            else if(itr->second->GetPriceMap().size()==61){ // There are 61 days
-//                newPool[itr->first] = itr->second;
+            else if(itr->second->GetPriceMap().size()==61){
                 cout<<" and has 61-d prices.\n";
             }else{
             cout<<", but has "<<itr->second->GetPriceMap().size()<<"-d prices.";
-//                cout<<itr->second->getDate_minus_30()<<"\n"<<itr->second->getDetdate_30();
                 cout<<"The stock will be removed from the pool. ";
             }
             itr++;
-//            cout<<"start new stock\n";
         }
         free(data.memory);
         data.size= 0;
-    } //end of(if handle)
+    }
     else
     {
             fprintf(stderr, "Curl init failed!\n");

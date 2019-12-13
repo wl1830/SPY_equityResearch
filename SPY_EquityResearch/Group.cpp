@@ -9,44 +9,23 @@
 #include "Group.hpp"
 #include "VectorCalculation.hpp"
 Matrix Group::getSampledARm(int n){
-    
-    char buffer[30];
     struct timeval tv;
-
-    time_t curtime;
-
-
-
     gettimeofday(&tv, NULL);
-    curtime=tv.tv_sec;
-
-    strftime(buffer,30,"%m-%d-%Y  %T.",localtime(&curtime));
-    int seed  = int(tv.tv_usec);
-//    cout<<"seed is "<<seed<<endl;
-//    srand(seed);
-    //n is sample size default 30
+    int seed  = int(tv.tv_usec); // microseconds
     vector<int> sample_ind;
-    
     for(int i = 0;i<StockPtrs.size();i++){
-        sample_ind.push_back(i);
+     sample_ind.push_back(i);
     }
-    
-//    auto rng = default_random_engine {};
-//    std::shuffle(begin(sample_ind), end(sample_ind), rng);
+    // Shuffle the index
     mt19937 eng(seed);
     std::shuffle(begin(sample_ind), end(sample_ind), eng);
-    
-//    vector<Stock*>::iterator itr;
+    // Take rows from AR matrix, whose row number is the first 30 shuffled index
+    // Form a 30*60 matrix
     Matrix sample_ar_m;
-    
-//     cout<<"30 sampled inx for 1 bootstramp\n"<<endl;
     for(int i =0;i<n;i++){
             sample_ar_m.push_back(AR_all[sample_ind[i]]);
         }
-//    cout<<endl;
-//    cout<<"sampled inx"<<endl;
-    
-    return sample_ar_m;
+    return sample_ar_m; //30*60
 }
 
 vector<double> CalavgAxis0(Matrix m){
@@ -69,16 +48,7 @@ vector<double> CalStdAxis0(Matrix m){
                 mean = (mean*s+m[s][d])/(s+1.0);
                 var = (var*s+(m[s][d]*m[s][d]))/(s+1.0);
             }
-        if(-mean*mean+var<0){
-            
-            cout<<"\n"<<var<<"\t"<<mean;
-            cout<<"\n"<<var<<"\t"<<mean*mean;;
-            cout<<"var-mean*mean:"<<(var-mean*mean)<<"\t";
-            
-        }
             stdV.push_back(sqrt(-mean*mean+var));
-        
-
     }
     return stdV;
 }
@@ -107,20 +77,22 @@ void Group::CalAR_all(){
         
         // return of each stock
         vector<double> vStock =(*itr)->GetReturnVec();
+        
         //return of index for corresponding dates
         string d1 = (*itr)->GetReturnBeginDate();
         string d60 = (*itr)->GetReturnEndDate();
         vector<double> vIndex =indexPtr->GetReturnVec(d1,d60);
-        // store the abnormal 
-        AR_all.push_back((vStock-vIndex)); //AR vector for every stock
+        
+        // Calculate store the abnormal return for each stock, store them in a matrix
+        AR_all.push_back(vStock-vIndex);
     }
 }
 
 
 void Group::Bootstap30_Calculate_All(){
-    // Calculate Abnormal return for all stocks in the group and store it in the AR_all matrix (165*60) if there are 165 stocks
+    // Calculate AR for all stocks in the group and store it in the AR_all matrix (165*60) if there are 165 stocks
     CalAR_all();
-    // Bootstrapp for 30 times
+    // Bootstrap for 30 times
     for(int i = 0;i<30;i++){
        //For One bootstrap
         // sample 30 stocks get 30*60  AR vector
@@ -130,7 +102,6 @@ void Group::Bootstap30_Calculate_All(){
         vector<double> CAARv  = VectoCumu(AARv);//60*1
         AARm.push_back(AARv);
         CAARm.push_back(CAARv);
-    // take samples;
     }
     cout<<"\nGroup "<<groupName<<" bootstrap 30 times. "<<endl;
     //After 30 bootstraps; AARm and CAARm  is 60*30
