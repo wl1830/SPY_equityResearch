@@ -277,7 +277,7 @@ int main(int argc, const char * argv[]) {
                                         case 0:  //AAR
                                             PrintVecotr(Results[2][0]);
                                             break;
-                                        case 1://AAR
+                                        case 1://AARstd
                                             PrintVecotr(Results[2][1]);
                                             break;
                                         case 2://CAAR
@@ -304,23 +304,21 @@ int main(int argc, const char * argv[]) {
     }
  else if (c == '4') {
                 //gnuplot:
-                if(Beat.getCAARavg().size()==0){
-                                   cout<<"\nPlease retrive historical price by pressing 1 first.\n";
-                               }
+                if(Beat.getCAARavg().size()==0)
+                {   cout<<"\nPlease retrive historical price by pressing 1 first.\n";
+                    }
                 else{
-                vector<double> v1 = Results[0][2];
-                vector<double> v2 = Results[1][2];
-                vector<double> v3 = Results[2][2];
-                                  
-//                    Plot(v1, v2,v3);
-                     PlotVectors(v1, v2,v3);
-                                   
+                    vector<double> v1 = Results[0][2];
+                    vector<double> v2 = Results[1][2];
+                    vector<double> v3 = Results[2][2];
+                    PlotVectors(v1, v2,v3);
+                                       
                                }
 
             }
-            else if(c == '0') {
-                
-                break;}
+else if(c == '0') {
+        
+        break;}
             
     }
             
