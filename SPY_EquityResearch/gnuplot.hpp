@@ -15,6 +15,10 @@
 #include <vector>
 using namespace std;
 
-void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,int nIntervals = 59,double stepSize = 1.0,double x0= 1.0,const char *tempDataFileName1 = "Beat",const char *tempDataFileName2 = "Meet",const char *tempDataFileName3 = "Miss");
+void PlotVectors( vector<double> v1,vector<double> v2,vector<double> v3,
+                 int nIntervals = 59,double stepSize = 1.0,double x0= -30.0,
+                 const char *tempDataFileName1 = "Beat",
+                 const char *tempDataFileName2 = "Meet",
+                 const char *tempDataFileName3 = "Miss");
 
 #endif /* gnuplot_hpp */

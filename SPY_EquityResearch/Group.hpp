@@ -33,20 +33,16 @@ private:
     string groupName;
     vector<Stock*> StockPtrs;
     vector<Stock*> SampleStockPtrs;
+    Matrix AR_all; //166*61
     Matrix AARm;
     Matrix CAARm;
-    Matrix AR_all; //166*61
-//     AR_sample_index; //  30 *61
     vector<double> avgAAR;
     vector<double> avgCAAR;
     vector<double> stdAAR;
     vector<double> stdCAAR;
 public:
-    Matrix getSampledARm(int n=30); //return 30*61 AR matrix
     static Index * indexPtr;
-    Group(const string & Name):groupName(Name)
-    { 
-    }
+    Group(const string & Name):groupName(Name){}
     
     void addStock(Stock * stockptr){
         StockPtrs.push_back(stockptr);
@@ -63,21 +59,10 @@ public:
     }
     
     void CalAR_all(); //for all stocks
-    void Sample(int n =30); //Set SampleStockPtrs
     
-    static void IndexSearch_CalReturn(){
-        indexPtr->SearchPrice();
-        indexPtr->CalReturn();
-    }
-    vector<double> CalAARv();//60*1
-//    vector<double> CalCAARv();//60*1
+    Matrix getSampledARm(int n=30); //return n*60 AR matrix
     
-    void Cal_AARm_CAARm(); // 60*30 //assign to AAR
-    void CalAARavg(); //60*1
-    void CalCAARavg();//60*1
-    void CalAARstd();//60*1
-    void CalCAARstd();//60*1
-    void Bootstap30_Calculate_All();//Return [AAR,CAAR,AARstd,CAARstd], each element is a  60*1 vector
+    void Bootstap30_Calculate_All();//Calculate AAR,CAAR,AARstd,CAARstd, each element is a  60*1 vector
     vector<double> getAARavg(){return avgAAR;}
     vector<double> getCAARavg(){return avgCAAR;}
     vector<double> getAARstd(){return stdAAR;}

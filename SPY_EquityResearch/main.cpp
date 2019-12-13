@@ -60,7 +60,7 @@ int main(int argc, const char * argv[]) {
             return 1;
         }
         getline(infile, line);
-        cout<< "\n\n\n\nStart to read the following information: \n";
+        cout<< "\n\n\n\nRead in the following information: \n";
         cout << line << endl;
         double minDatenum =20191231;
         double maxDatenum = 20190101;
@@ -71,12 +71,11 @@ int main(int argc, const char * argv[]) {
         vector<double> Surprises;
         
         while (getline(infile,line)){
-            //line 'Ticker', 'Actual', 'Estimate', 'Time','Date','date_minus_30', 'date_30'
+            //line 'Ticker', 'Actual', 'Estimate', 'Date','date_minus_30', 'date_30'
             stringstream ss(line);
             getline(ss,ticker,',');
             getline(ss,actualEPSstr,',');
             getline(ss,estimateEPSstr,',');
-//            getline(ss,datetimezero,',');
             getline(ss,datezero,',');
             getline(ss,date_minus_30,',');
             getline(ss,date_30,',');
@@ -189,7 +188,8 @@ int main(int argc, const char * argv[]) {
                 Results.push_back({Beat.getAARavg(),Beat.getAARstd(),Beat.getCAARavg(),Beat.getCAARstd()}); // Beat results
                 Results.push_back({Meet.getAARavg(),Meet.getAARstd(),Meet.getCAARavg(),Meet.getCAARstd()}); // Meet results
                 Results.push_back({Miss.getAARavg(),Miss.getAARstd(),Miss.getCAARavg(),Miss.getCAARstd()}); // Miss results
-                    }
+                
+            }
               else if (c == '2')
               {
                 string ticker;
@@ -312,7 +312,7 @@ int main(int argc, const char * argv[]) {
                         
                     }
                 else{cout<<endl<<"Wrong type."<<endl;}
-            }
+                }
             
                 }
          else if (c == '4') {
@@ -329,7 +329,7 @@ int main(int argc, const char * argv[]) {
                             PlotVectors(v1, v2, v3);
                             
                             }
-                        }
+                 }
         else if(c == '0') {break;}
                     
         }
