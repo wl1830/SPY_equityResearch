@@ -76,7 +76,7 @@ int main(int argc, const char * argv[]) {
             getline(ss,ticker,',');
             getline(ss,actualEPSstr,',');
             getline(ss,estimateEPSstr,',');
-            getline(ss,datetimezero,',');
+//            getline(ss,datetimezero,',');
             getline(ss,datezero,',');
             getline(ss,date_minus_30,',');
             getline(ss,date_30,',');
@@ -94,7 +94,7 @@ int main(int argc, const char * argv[]) {
             if(edatenum>maxDatenum ){maxDatenum=edatenum;}
             
             // Create  stock objects
-            Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
+            Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,actualEPS,estimateEPS);// surprises is calculated in constructor
             Surprises.push_back(stock->getSurprise());
             poolStocks[ticker] =stock;
             poolAll[ticker] =stock;
@@ -153,7 +153,7 @@ int main(int argc, const char * argv[]) {
 
         cout << endl << endl << "--------------------------------menu--------------------------------" << endl << endl
         << "Please press 1 to retrieve historical all stocks."  << endl
-        << "Please press 2 to pull information for one stock  from one group" << endl
+        << "Please press 2 to pull information for one stock from one group" << endl
         << "Please press 3(after 1)to show AAR, CAAR, AARstd or CAARstd for one group."  << endl
         << "Please press 4(after 1) to show the Excel graph with CAAR for all 3 groups." << endl
         << "Please press 0 to exit the program." << endl << endl;
@@ -321,7 +321,7 @@ int main(int argc, const char * argv[]) {
                             vector<double> v2 = Results[1][2]; //Meet
                             vector<double> v3 = Results[2][2]; //Miss
                             // Use gnuPlot
-                            PlotVectors(v1, v2,v3);
+                            PlotVectors(v1, v2, v3);
                             
                             }
                         }
