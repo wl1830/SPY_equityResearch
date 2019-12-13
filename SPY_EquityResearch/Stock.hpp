@@ -98,8 +98,6 @@ public:
     double getActualEPS()const{
         return EPS;
     }
- 
-    
     void SearchPrice();//get prices
 };
 

@@ -42,7 +42,6 @@ int main(int argc, const char * argv[]) {
     
     // insert code here...
     // Read in ticker, time, EPS and EEPS
-    
         ifstream infile;
        /*
         If  cannt read, In Xcode go to Product > Scheme > Edit Scheme > Run test (on the right) > Options (middle top)
@@ -65,9 +64,10 @@ int main(int argc, const char * argv[]) {
         cout << line << endl;
         double minDatenum =20191231;
         double maxDatenum = 20190101;
-//        vector<Stock*> Stocks;
+
         map<string,Stock*> poolStocks;
         map<string,Equity*> poolAll;
+        vector<vector<vector<double>>> Results;
         vector<double> Surprises;
         
         while (getline(infile,line)){
@@ -83,9 +83,6 @@ int main(int argc, const char * argv[]) {
             actualEPS = stod(actualEPSstr);
             estimateEPS = stod(estimateEPSstr);
             double sdatenum,edatenum;
-            // change the time format 2019-01-23 06:00:00 to 2019-01-23T06:00:00
-//            datetimezero = datetimezero.substr(0,10)+"T"+datetimezero.substr(11,8);
-            
             //update the min max date
             sdatenum = (stod(date_minus_30.substr(0,4))*10000) +
                     (stod(date_minus_30.substr(5,2))*100) +
@@ -95,7 +92,6 @@ int main(int argc, const char * argv[]) {
                         stod(date_30.substr(8,9));
             if(sdatenum<minDatenum ){minDatenum=sdatenum;}
             if(edatenum>maxDatenum ){maxDatenum=edatenum;}
-    
             
             // Create  stock objects
             Stock * stock= new Stock(ticker,datezero,date_minus_30,date_30,datetimezero,actualEPS,estimateEPS);// surprises is calculated in constructor
@@ -126,8 +122,6 @@ int main(int argc, const char * argv[]) {
     map<string,Stock*>::iterator Stocksitr;
     for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++)
     {
-//        (*Stocksitr)->SearchPrice();
-//        (*Stocksitr)->CalReturn();
         if((Stocksitr->second)->getSurprise()>Thres2){
             Beat.addStock(Stocksitr->second);
         }
@@ -160,9 +154,9 @@ int main(int argc, const char * argv[]) {
 
         cout << endl << endl << "--------------------------------menu--------------------------------" << endl << endl
         << "Please press 1 to retrieve historical all stocks."  << endl
-        <<"Please press 2 to pull information for one stock  from one group" << endl
-       << "Please press 3(after 1)to show AAR,CAAR,AARstd or CAARstd for one group."  << endl
-      << "Please press 4(after 1) to show the Excel graph with CAAR for all 3 groups." << endl
+        << "Please press 2 to pull information for one stock  from one group" << endl
+        << "Please press 3(after 1)to show AAR, CAAR, AARstd or CAARstd for one group."  << endl
+        << "Please press 4(after 1) to show the Excel graph with CAAR for all 3 groups." << endl
         << "Please press 0 to exit the program." << endl << endl;
         
         while (true)
@@ -172,12 +166,8 @@ int main(int argc, const char * argv[]) {
             c = getchar();
             if (c == '1')
             {
-//                Group::indexPtr->SearchPrice();
-                
                 cout<<"\nStart to search price for sampled stocks and calculate. \nPlease hold...\n";
-//                 searchStocks(pool);
                 searchEquities(poolAll);
-//                Group::indexPtr->CalReturn();
                 for(map<string,Equity*>::iterator itr=poolAll.begin();itr!=poolAll.end();itr++){
                     (itr->second)->CalReturn();
                 }
@@ -185,18 +175,18 @@ int main(int argc, const char * argv[]) {
                 Beat.Bootstap30_Calculate_All();
                 Meet.Bootstap30_Calculate_All();
                 Miss.Bootstap30_Calculate_All();
-
-                    cout<<"\nCalculation for three groups done!\n"<<endl;
-
+                cout<<"\nCalculation for three groups done!\n"<<endl;
+                // Pop calculations into a matrix of vecotors
+                Results.push_back({Beat.getAARavg(),Beat.getAARstd(),Beat.getCAARavg(),Beat.getCAARstd()});
+                Results.push_back({Meet.getAARavg(),Meet.getAARstd(),Meet.getCAARavg(),Meet.getCAARstd()});
+                Results.push_back({Miss.getAARavg(),Miss.getAARstd(),Miss.getCAARavg(),Miss.getCAARstd()});
                     }
-//             if (c == '1')
               else if (c == '2')
             {
                 string ticker;
                 cout<<"Please enter the stock symbol:"<<endl;
                 cin>>ticker;
-            
-//                   // Not a stock
+                // Not a stock
                     if ( poolStocks.find(ticker) == poolStocks.end() ){
                         //check if it is a index
                         if(ticker=="SPY"){
@@ -214,15 +204,9 @@ int main(int argc, const char * argv[]) {
                         cout<<"Stock Estimated EPS: "<<stkptr->getEstimateEPS()<<endl;
                         cout<<"Stock actual EPS: "<<stkptr->getActualEPS()<<endl;
                         cout<<"Surprise:"<<stkptr->getSurprise()<<endl;
-    //                    map<string,double>price = priceMap(ticker);
                         cout<<endl<<"Date\tAdjClose:"<<endl;
-    //                    for (map<string,double>::SearchPrice()) cout<<itr->first<<" "<<itr->second <<endl;
-                        // Search and print prices
-                        
                         PrintMap(stkptr->GetPriceMap());
                         }
-                
-                
             }
                            else if(c == '3' )
     {
@@ -232,131 +216,115 @@ int main(int argc, const char * argv[]) {
             cout<<"Please retrive historical price by pressing 1 first.\n";
         }
         else{
-                      string dataType;
-                                string groupName;
-                                cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
-                                cin>> dataType;
-                
-            //                    if (dataType !="AAR" && dataType != "CAAR"&& dataType !="AARstd" && dataType != "CAARstd") {}
-                                if (dataType =="AAR" || dataType == "CAAR"|| dataType =="AARstd" || dataType == "CAARstd") {
-                                    cout<<"Please enter the group name (Beat, Meet, Miss):"<<endl;
-                                    cin>>groupName;
-                                    if (groupName == "Beat" || groupName == "Meet" || groupName == "Miss") {
-                                        int metricType;
-                                            if(dataType =="AAR"){ metricType = 0;}
-                                            else if(dataType !="CAAR"){ metricType = 1;}
-                                            else if(dataType !="AARstd"){ metricType = 2;}
-                                            else { metricType = 3;}
-                                            int group;
-                                            if (groupName == "Beat") group = 0;
-                                            else if (groupName == "Meet") group = 1;
-                                            else group = 2;
-                                                
+                string dataType;
+                string groupName;
+                cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
+                cin>> dataType;
 
-                                        
-                                            cout<<endl<<"The "<<dataType<<" of group "<<groupName<<" is:"<<endl;
-                                            switch (group) {
-                                                case 0: //Beat
-                                                    switch (metricType) {
-                                                        case 0: //AAR
-                                                            PrintVecotr(Beat.getAARavg());
-                                                            break;
-                                                        case 1:  //CAAR
-                                                        PrintVecotr(Beat.getAARstd());
-                                                        break;
-                                                        case 2: //AARstd
-                                                        PrintVecotr(Beat.getCAARavg());
-                                                        break;
-                                                        case 3: //CAARstd
-                                                        PrintVecotr(Beat.getCAARstd());
-                                                        break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                    break;
-                                                    case 1: //Meet
-                                                        switch (metricType) {
-                                                            case 0: //AAR
-                                                                PrintVecotr(Meet.getAARavg());
-                                                                
-                                                                break;
-                                                            case 1://CAAR
-                                                            PrintVecotr(Meet.getAARstd());
-                                                            break;
-                                                            case 2://AARstd
-                                                            PrintVecotr(Meet.getCAARavg());
-                                                            break;
-                                                            case 3://CAARstd
-                                                            PrintVecotr(Meet.getCAARstd());
-                                                            break;
-                                                            default:
-                                                                break;
-                                                        }
-                                                        break;
-                                                case 2: //Miss
-                                                    switch (metricType) {
-                                                        case 0:  //AAR
-                                                            PrintVecotr(Miss.getAARavg());
-                                                            break;
-                                                        case 1://CAAR
-                                                        PrintVecotr(Miss.getAARstd());
-                                                        break;
-                                                        case 2://AARstd
-                                                        PrintVecotr(Miss.getCAARavg());
-                                                        break;
-                                                        case 3://CAARstd
-                                                        PrintVecotr(Miss.getCAARstd());
-                                                        break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                    break;
-                                                    
-                                                default:
-                                                    break;
-                                            }
-                                        
-                                    }else{cout<<endl<<"Wrong Group."<<endl;}
+                if (dataType =="AAR" || dataType == "CAAR"|| dataType =="AARstd" || dataType == "CAARstd") {
+                    cout<<"Please enter the group name (Beat, Meet, Miss):"<<endl;
+                    cin>>groupName;
+                    if (groupName == "Beat" || groupName == "Meet" || groupName == "Miss") {
+                        int metricType;
+                            if(dataType =="AAR"){ metricType = 0;}
+                            else if(dataType !="AARstd"){ metricType = 1;}
+                            else if(dataType !="CAAR"){ metricType = 2;}
+                            else { metricType = 3;}
+                            int group;
+                            if (groupName == "Beat") group = 0;
+                            else if (groupName == "Meet") group = 1;
+                            else group = 2;
+                            cout<<endl<<"The "<<dataType<<" of group "<<groupName<<" is:"<<endl;
+                            switch (group) {
+                                case 0: //Beat
+                                    switch (metricType) {
+                                        case 0: //AAR
+                                            PrintVecotr(Results[0][0]);
+                                            break;
+                                        case 1:  //AARstd
+                                            PrintVecotr(Results[0][1]);
+                                            break;
+                                        case 2: //CAAR
+                                            PrintVecotr(Results[0][2]);
+                                            break;
+                                        case 3: //CAARstd
+                                            PrintVecotr(Results[0][3]);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
+                                case 1: //Meet
+                                    switch (metricType) {
+                                        case 0: //AAR
+                                            PrintVecotr(Results[1][0]);
+                                            break;
+                                        case 1://AARstd
+                                            PrintVecotr(Results[1][1]);
+                                            break;
+                                        case 2://CAAR
+                                            PrintVecotr(Results[1][2]);
+                                            break;
+                                        case 3://CAARstd
+                                            PrintVecotr(Results[1][3]);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
+                                case 2: //Miss
+                                    switch (metricType) {
+                                        case 0:  //AAR
+                                            PrintVecotr(Results[2][0]);
+                                            break;
+                                        case 1://AAR
+                                            PrintVecotr(Results[2][1]);
+                                            break;
+                                        case 2://CAAR
+                                            PrintVecotr(Results[2][2]);
+                                            break;
+                                        case 3://CAARstd
+                                            PrintVecotr(Results[2][3]);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
                                     
-                                }
-                                            
-                        //                    if (groupName != "Beat" && groupName != "Meet" && groupName != "Miss") {cout<<endl<<"Wrong name."<<endl;valid_and_group = 0;}
-                                            else{cout<<endl<<"Wrong Type."<<endl;}
-          
-
+                                default:
+                                    break;
+                            }
+                        
+                    }else{cout<<endl<<"Wrong group name."<<endl;}
+                    
+                }
+                    else{cout<<endl<<"Wrong type."<<endl;}
         }
-        
-
         
     }
  else if (c == '4') {
                 //gnuplot:
                 if(Beat.getCAARavg().size()==0){
-                                   cout<<"Please retrive historical price by pressing 1 first.\n";
+                                   cout<<"\nPlease retrive historical price by pressing 1 first.\n";
                                }
                 else{
-                vector<double> v1 = Beat.getCAARavg();
-                vector<double> v2 = Meet.getCAARavg();
-                vector<double> v3 = Miss.getCAARavg();
+                vector<double> v1 = Results[0][2];
+                vector<double> v2 = Results[1][2];
+                vector<double> v3 = Results[2][2];
                                    Plot(v1, v2,v3);
                                    
                                }
 
             }
-//
             else if(c == '0') {
                 
                 break;}
-            
             
     }
             
 
     
     // Deallocate stocks and spy
-
-    
-
     map<std::string, Stock*>::iterator itr = poolStocks.begin();
     if(itr!=poolStocks.end()){
         delete itr->second;
@@ -367,7 +335,6 @@ int main(int argc, const char * argv[]) {
     delete Group::indexPtr;
     Group::indexPtr = NULL;
 
-    
  
-        }
+    }
 
