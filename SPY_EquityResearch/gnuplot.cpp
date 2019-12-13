@@ -9,11 +9,9 @@
 #include "gnuplot.hpp"
 
 
-
-
-
-
-void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,int nIntervals ,double stepSize,double x0,const char *tempDataFileName1 ,const char *tempDataFileName2 ,const char *tempDataFileName3 ){
+void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,
+                 int nIntervals ,double stepSize,double x0,
+                 const char * FileName1,const char * FileName2 ,const char * FileName3 ){
     FILE *gnuplotPipe,*tempDataFile;
     double x,y, x2, y2,x3,y3;
     int i;
@@ -21,9 +19,12 @@ void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,int nInte
 
     int dataSize = (int)v1.size();
     if (gnuplotPipe) {
-         fprintf(gnuplotPipe,"set term wxt;plot \"%s\" with lines,\"%s\" with lines, \"%s\" with lines \n",tempDataFileName1, tempDataFileName2,tempDataFileName3);
+         fprintf(gnuplotPipe," set term wxt;set title \"Average CAAR\";set xlabel \"day\"; ");
+         fprintf(gnuplotPipe,"plot \"%s\" with lines,\"%s\" with lines, \"%s\" with lines \n",
+                 FileName1, FileName2,FileName3);
+         
          fflush(gnuplotPipe);
-         tempDataFile = fopen(tempDataFileName1,"w");
+         tempDataFile = fopen(FileName1,"w");
          for (i=0; i < dataSize; i++) {
              x = x0+i*(stepSize);
              y = v1[i];
@@ -31,7 +32,7 @@ void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,int nInte
          }
          fclose(tempDataFile);
          
-         tempDataFile = fopen(tempDataFileName2,"w");
+         tempDataFile = fopen(FileName2,"w");
          for (i=0; i < dataSize; i++) {
              x2 = x0+i*(stepSize);
              y2 = v2[i];
@@ -39,7 +40,7 @@ void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,int nInte
          }
          fclose(tempDataFile);
          
-         tempDataFile = fopen(tempDataFileName3,"w");
+         tempDataFile = fopen(FileName3,"w");
          for (i=0; i < dataSize; i++) {
              x3 = x0+i*(stepSize);
              y3 = v3[i];
@@ -49,9 +50,6 @@ void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,int nInte
          
          printf("press enter to continue...");
          getchar();
-//        remove(tempDataFileName1); //deletes the file
-//        remove(tempDataFileName2);
-//        remove(tempDataFileName3);
         fprintf(gnuplotPipe,"exit \n");
         
      } else {
