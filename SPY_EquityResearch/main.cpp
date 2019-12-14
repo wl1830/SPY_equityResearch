@@ -112,7 +112,7 @@ int main(int argc, const char * argv[]) {
     
     // Store the stock pointers into the Group objects according to surprise value
     map<string,Stock*>::iterator Stocksitr;
-    map<string,Stock*>::iterator Eqtysitr;
+    map<string,Equity*>::iterator Eqtysitr;
     for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++)
     {
         if((Stocksitr->second)->getSurprise()>Thres2){
@@ -315,13 +315,12 @@ int main(int argc, const char * argv[]) {
         
     
         // Free the memory of stocks and SPY index
-    
-        for(Stocksitr =poolStocks.begin();Stocksitr!= poolStocks.end();Stocksitr++){
-            delete Stocksitr->second;
-            Stocksitr->second = NULL;
-        }
-        delete Group::indexPtr;
-        Group::indexPtr = NULL;
-        poolStocks.clear();poolAll.clear();
+
+    for(Eqtysitr=poolAll.begin();Eqtysitr != poolAll.end();Eqtysitr++){
+        delete Eqtysitr->second;
+        Eqtysitr->second = NULL;
+    }
+
+    poolAll.clear();
     }
 

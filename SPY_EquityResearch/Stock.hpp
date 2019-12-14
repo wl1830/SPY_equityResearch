@@ -35,6 +35,8 @@ public:
     
     void setPriceMap(map<string,double> m);
     virtual void printInfo()=0;
+    virtual ~Equity(){}
+    
 };
 
 class Stock:public Equity{
@@ -89,6 +91,7 @@ public:
         return EPS;
     }
     void SearchPrice();//get prices
+    ~Stock(){}
 };
 
 
@@ -108,6 +111,7 @@ public:
         return enddate;
     }
     void SearchPrice();
+    ~Index(){}
 };
 
 void searchEquities(map<string,Equity*> pool);

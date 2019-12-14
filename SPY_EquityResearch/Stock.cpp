@@ -693,21 +693,26 @@ void PrintMap(map<string, double> m){
 
 void Stock::printInfo(){
     
-    cout<<"Ticker:"<<this->getTicker()<<endl;
     cout<<"Start day: "<<this->getDate_minus_30()<<endl;
-    cout<<"End day: "<<this->getDetdate_30()<<endl;
     cout<<"Announcement date: "<<this->getDatezero()<<endl;
+    cout<<"End day: "<<this->getDetdate_30()<<endl;
     cout<<"Stock Estimated EPS: "<<this->getEstimateEPS()<<endl;
     cout<<"Stock actual EPS: "<<this->getActualEPS()<<endl;
     cout<<"Surprise:"<<this->getSurprise()<<endl;
-    cout<<endl<<"Date\tAdjClose:"<<endl;
+    cout<<endl<<"Date\t\tAdjClose:"<<endl;
     if(this->GetPriceMap().size()!=0)PrintMap(this->GetPriceMap());
 }
 
 
 void Index::printInfo(){
-    cout<<endl<<"Date\t\tAdjClose:"<<endl;
-    PrintMap(this->GetPriceMap());
+    
+    if(this->GetPriceMap().size()!=0){
+        cout<<endl<<"Date\t\tAdjClose:"<<endl;
+        PrintMap(this->GetPriceMap());
+        
+    }
+    else {cout<<"No price info.\n";}
+    
 }
 
 
