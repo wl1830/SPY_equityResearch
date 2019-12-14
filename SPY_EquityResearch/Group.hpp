@@ -32,9 +32,12 @@ class Group{
 private:
     string groupName;
     vector<Stock*> StockPtrs;
+    
     Matrix AR_all; // n_stock*60
+    
     Matrix AARm; // n_Boot*60
     Matrix CAARm; // n_Boot*60
+    
     vector<double> avgAAR; //60*1
     vector<double> avgCAAR; //60*1
     vector<double> stdAAR; //60*1
@@ -50,6 +53,7 @@ public:
     // Calculate and store
     void CalAR_all(); // AR for all stock
     Matrix getSampledARm(int n=30); //return n_sample * 60 AR matrix
+    void Bootstap1_Calculate();
     void Bootstap30_Calculate_All();//Calculate and store AAR,CAAR,AARstd,CAARstd, each element is a  60*1 vector
     
     

@@ -21,4 +21,7 @@ void PlotVectors( vector<double> v1,vector<double> v2,vector<double> v3,
                  const char * FileName2 = "Meet",
                  const char * FileName3 = "Miss");
 
+
 #endif /* gnuplot_hpp */
+
+

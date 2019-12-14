@@ -489,7 +489,7 @@ void Index::SearchPrice(){
 void searchEquities(map<string,Equity*> pool)
 {
     map<string,Equity*>::iterator itr = pool.begin();
-    map<string,Equity*> newPool;
+    
     struct MemoryStruct data;
     data.memory = NULL;
     data.size = 0;
@@ -591,9 +591,11 @@ void searchEquities(map<string,Equity*> pool)
                 break;
             
             string urlA = "https://query1.finance.yahoo.com/v7/finance/download/";
+            
             string symbol = itr->first;
             string startTime = getTimeinSeconds(itr->second->getSearchStartDate());
             string endTime = getTimeinSeconds(itr->second->getSearchEndDate());
+            
             string urlB = "?period1=";
             string urlC = "&period2=";
             string urlD = "&interval=1d&events=history&crumb=";
@@ -602,6 +604,7 @@ void searchEquities(map<string,Equity*> pool)
             const char * cookies = sCookies.c_str();
             curl_easy_setopt(handle, CURLOPT_COOKIE, cookies);   // Only needed for 1st stock
             curl_easy_setopt(handle, CURLOPT_URL, cURL);
+            
 //            fp = fopen(resultfilename, "ab");
 //            curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data);
 //            curl_easy_setopt(handle, CURLOPT_WRITEDATA, fp);
@@ -633,9 +636,8 @@ void searchEquities(map<string,Equity*> pool)
                 string date,tempstring,adjClosestr;
                 double  adjClose;
             
-               map<string,double> pricemap;
+            map<string,double> pricemap;
             while ( getline(sData, line) ){
-                
                 stringstream ss(line);
                 getline(ss,date,',');
                 getline(ss,tempstring,','); //open
@@ -643,21 +645,21 @@ void searchEquities(map<string,Equity*> pool)
                 getline(ss,tempstring,',');//low
                 getline(ss,tempstring,',');//close
                 getline(ss,adjClosestr,',');//adjclose
-                adjClose = stod(adjClosestr); //string to long double
+                adjClose = stod(adjClosestr); //string to double
                 getline(ss,tempstring,',');//volume
                 
                 pricemap[date]= adjClose;
             }
+            itr->second->setPriceMap(pricemap);
             
-             itr->second->setPriceMap(pricemap);
+            
             cout<<itr->first<<" searched";
             if(pricemap.size()==61){
                            cout<<" with 61-day prices\n";
                        }
             else if(itr->first=="SPY"){
-                cout<<" with "<<pricemap.size()<<"-day prices\n";
-            }
-           else{
+                cout<<" with "<<pricemap.size()<<"-day prices\n";}
+            else{
                 cout<<", but has "<<pricemap.size()<<"-day prices\n";
             }
             itr++;

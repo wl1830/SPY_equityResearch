@@ -20,7 +20,7 @@ void PlotVectors(vector<double> v1,vector<double> v2,vector<double> v3,
     int dataSize = (int)v1.size();
     if (gnuplotPipe) {
          fprintf(gnuplotPipe," set term wxt;set title \"Average CAAR\";set xlabel \"day\"; ");
-         fprintf(gnuplotPipe,"plot \"%s\" with lines lw 6,\"%s\" with lines lw 6, \"%s\" with lines lw 6 \n",
+         fprintf(gnuplotPipe,"plot \"%s\" with lines lw 6,\"%s\" with lines lw 6, \"%s\" with lines lw 4 \n",
                  FileName1, FileName2,FileName3);
          
          fflush(gnuplotPipe);

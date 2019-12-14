@@ -30,7 +30,6 @@ public:
         return ticker;
     }
     void CalReturn(); // Calculate daily return from priceMap, store in returnMap
-    
     virtual string getSearchStartDate()const=0;
     virtual string getSearchEndDate()const=0;
     

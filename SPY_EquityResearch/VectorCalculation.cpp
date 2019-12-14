@@ -9,10 +9,8 @@
 #include "VectorCalculation.hpp"
 
 vector<double> operator-(const vector<double>& V,const vector<double>& M){
-    
-    size_t s = V.size();
+     size_t s = V.size();
     vector<double> W(s);
-    
 for (int j=0; j<V.size(); j++)
 {
     W[j]=V[j]-M[j];
