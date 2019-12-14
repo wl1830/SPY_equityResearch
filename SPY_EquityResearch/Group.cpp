@@ -9,47 +9,7 @@
 #include "Group.hpp"
 #include "VectorCalculation.hpp"
 
-vector<double> CalavgAxis0(Matrix m){
-    vector<double> meanV;
-    for(int d=0;d<m[0].size();d++){
-        double mean = 0.0;
-        for(int s=0;s<m.size();s++){
-            mean = (mean*s+m[s][d])/(s+1.0);
-        }
-        meanV.push_back(mean);
-    }
-    return meanV;
-}
-vector<double> CalStdAxis0(Matrix m){
-    vector<double> stdV;
-    for(int d=0;d<m[0].size();d++){
-        double var = 0.0;
-        double mean = 0.0;
-            for(int s=0;s<m.size();s++){
-                mean = (mean*s+m[s][d])/(s+1.0);
-                var = (var*s+(m[s][d]*m[s][d]))/(s+1.0);
-            }
-            stdV.push_back(sqrt(-mean*mean+var));
-    }
-    return stdV;
-}
 
-vector<double> VectoCumu(vector<double> v)
-{
-    double cu = 0;
-    vector<double>  cuV;
-    for(int i = 0;i<v.size();i++){
-        cu+=v[i];
-        cuV.push_back(cu);
-    }
-    return  cuV;
-}
-void Printvecotr(vector<double> v){
-    for(int i=0;i<v.size();i++){
-        cout<<v[i]<<"\t";
-    }
-    cout<<endl;
-}
 
 
 void Group::CalAR_all(){
@@ -84,14 +44,16 @@ Matrix Group::getSampledARm(int n){
     // Take rows from AR matrix, whose row number is the first 30 shuffled index
     // Form a 30*60 matrix
     Matrix sample_ar_m;
-    for(int i =0;i<n;i++){
-            sample_ar_m.push_back(AR_all[sample_ind[i]]);
+    for(int i =0;i<n;i++)
+    {
+       sample_ar_m.push_back(AR_all[sample_ind[i]]);
         }
     return sample_ar_m; //30*60
 }
 
 
-void Group::Bootstap30_Calculate_All(){
+void Group::Bootstap30_Calculate_All()
+{
     // Calculate AR for all stocks in the group and store it in the AR_all matrix (165*60) if there are 165 stocks
     CalAR_all();
     

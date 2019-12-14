@@ -50,7 +50,7 @@ int main(int argc, const char * argv[]) {
         string epspath ="EPS_date_temp.csv";
         infile.open(epspath);
         string  ticker, actualEPSstr,estimateEPSstr;
-        double actualEPS,estimateEPS;
+        double  actualEPS,estimateEPS;
         string  datetimezero;
         string  datezero,date_minus_30,date_30;
         string line;
@@ -67,8 +67,8 @@ int main(int argc, const char * argv[]) {
 
         map<string,Stock*> poolStocks;// Ticker: Stock* : all the stocks
         map<string,Equity*> poolAll;  // Ticker: Equity*: Index and stock all the stocks
-        vector<vector<vector<double>>> Results;
-        vector<double> Surprises;
+        vector<double> Surprises; // surprise for all stocks
+        vector<vector<vector<double>>> Results; // Results for 3 groups
         
         while (getline(infile,line)){
             //line 'Ticker', 'Actual', 'Estimate', 'Date','date_minus_30', 'date_30'
@@ -165,16 +165,20 @@ int main(int argc, const char * argv[]) {
             if (c == '1')
             {
                 cout<<"\nStart to search price for all stocks....\n\n";
-                // Retrive historical prices for index and all stocks, store in the PriceMap of each Equity object
+                
+                // Retrieve historical prices for index and all stocks, store in the PriceMap of each Equity object
                 auto start = high_resolution_clock::now();
                 searchEquities(poolAll);
                 auto stop = high_resolution_clock::now();
                 auto duration = duration_cast<seconds>(stop - start);
                 cout <<"Time used for searching historical prices: " << duration.count() <<" s.\n"<< endl;
+                
+                
                 // Calculate daily return for index and all stocks, store in the returnMap of each Equity object
                 for(map<string,Equity*>::iterator itr=poolAll.begin();itr!=poolAll.end();itr++){
-                    (itr->second)->CalReturn();
-                }
+                    (itr->second)->CalReturn();}
+                
+                
                 // Bootstrap 30 times and aggregate result
                 start = high_resolution_clock::now();
                 Beat.Bootstap30_Calculate_All();
@@ -184,6 +188,8 @@ int main(int argc, const char * argv[]) {
                 cout<<"\nCalculation for three groups done!"<<endl;
                 auto duration2 = duration_cast<microseconds>(stop - start);
                 cout <<"\nTime used for bootstrap and calculation: " << duration2.count()<<" * 10^-6 s.\n"<< endl;
+                
+                
                 // Pop calculations into a matrix(3*4) of vecotors(60*1)
                 Results.push_back({Beat.getAARavg(),Beat.getAARstd(),Beat.getCAARavg(),Beat.getCAARstd()}); // Beat results
                 Results.push_back({Meet.getAARavg(),Meet.getAARstd(),Meet.getCAARavg(),Meet.getCAARstd()}); // Meet results
@@ -192,8 +198,8 @@ int main(int argc, const char * argv[]) {
             }
               else if (c == '2')
               {
-                string ticker;
                 cout<<"Please enter the stock symbol:"<<endl;
+                string ticker;
                 cin>>ticker;
                 //Not a stock
                     if ( poolStocks.find(ticker) == poolStocks.end() ){
@@ -218,13 +224,11 @@ int main(int argc, const char * argv[]) {
                         }
             }
            else if(c == '3' )
-                {
-
+                { //Check if the caculation done.
                     if(Beat.getCAARavg().size()==0){
-                        //Check if the caculation done.
-                        cout<<"Please retrive historical price by pressing 1 first.\n";
+                       cout<<"Please retrive historical price by pressing 1 first.\n";
                     }
-                else{
+                    else{ // When calculation already done
                     string dataType;
                     string groupName;
                     cout<<"Please enter the metric type (AAR, CAAR, AARstd,CAARstd):"<<endl;
@@ -316,10 +320,7 @@ int main(int argc, const char * argv[]) {
             
                 }
          else if (c == '4') {
-                        //
-                        if(Beat.getCAARavg().size()==0)
-                        {   cout<<"\nPlease retrive historical price by pressing 1 first.\n";
-                            }
+                        if(Beat.getCAARavg().size()==0){ cout<<"\nPlease retrive historical price by pressing 1 first.\n";}
                         else{
                             // Avg CAAR
                             vector<double> v1 = Results[0][2]; //Beat
@@ -327,7 +328,6 @@ int main(int argc, const char * argv[]) {
                             vector<double> v3 = Results[2][2]; //Miss
                             // Use gnuPlot
                             PlotVectors(v1, v2, v3);
-                            
                             }
                  }
         else if(c == '0') {break;}
@@ -339,7 +339,7 @@ int main(int argc, const char * argv[]) {
         for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++){
             delete Stocksitr->second;
             Stocksitr->second = NULL;
-            }
+        }
         poolStocks.clear();
         delete Group::indexPtr;
         Group::indexPtr = NULL;

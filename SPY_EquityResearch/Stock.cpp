@@ -369,7 +369,6 @@ void Index::SearchPrice(){
                     
                        }
     
-                    
                     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_data2);
                     curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)&data);
     
@@ -500,7 +499,6 @@ void searchEquities(map<string,Equity*> pool)
 
     //name of files
     const char outfilename[FILENAME_MAX] = "Output.txt";
-//    const char resultfilename[FILENAME_MAX] = "Results.txt";
 
     /* declaration of an object CURL */
     CURL *handle;
@@ -679,7 +677,7 @@ void searchEquities(map<string,Equity*> pool)
     /* this function releases resources acquired by curl_global_init() */
     curl_global_cleanup();
     cout<<"\nSearch done!\n";
-//    cout<<"\n-----------------------------------------\n";
+    
     
 }
 

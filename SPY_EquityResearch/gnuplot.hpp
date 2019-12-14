@@ -16,7 +16,7 @@
 using namespace std;
 
 void PlotVectors( vector<double> v1,vector<double> v2,vector<double> v3,
-                 int nIntervals = 59,double stepSize = 1.0,double x0= -30.0,
+                 int nIntervals = 59,double stepSize = 1.0,double x0= -29.0,
                  const char * FileName1 = "Beat",
                  const char * FileName2 = "Meet",
                  const char * FileName3 = "Miss");

@@ -31,7 +31,7 @@ public:
     }
     void CalReturn(); // Calculate daily return from priceMap, store in returnMap
     
-    virtual  string getSearchStartDate()const=0;
+    virtual string getSearchStartDate()const=0;
     virtual string getSearchEndDate()const=0;
     
     void setPriceMap(map<string,double> m);
