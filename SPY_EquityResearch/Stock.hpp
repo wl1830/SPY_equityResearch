@@ -34,7 +34,7 @@ public:
     virtual string getSearchEndDate()const=0;
     
     void setPriceMap(map<string,double> m);
-    
+    virtual void printInfo()=0;
 };
 
 class Stock:public Equity{
@@ -49,7 +49,7 @@ public:
     string GetReturnEndDate()const{
         return date_30;
     }
-    
+    void printInfo();
     Stock(const string &Ticker_,
           const string &datezero_,const string &date_minus_30_,const string &date_30_,
           double EPS_,double EEPS_):
@@ -96,6 +96,7 @@ class Index:public Equity{
 private:
     string startdate,enddate;
 public:
+    void printInfo();
     Index(const string &Ticker_,const string & start,const string & end):
     Equity(Ticker_),startdate(start),enddate(end){}
     

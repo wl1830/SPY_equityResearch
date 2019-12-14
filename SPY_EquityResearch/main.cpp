@@ -30,13 +30,7 @@ void PrintVecotr(vector<double> v){
     }
     cout<<endl;
 }
-void PrintMap(map<string, double> m){
-    
-    for(map<string, double>::iterator i=m.begin();i!=m.end();i++){
-        cout<<i->first<<"\t"<<i->second<<endl;
-    }
-    cout<<endl;
-}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -118,6 +112,7 @@ int main(int argc, const char * argv[]) {
     
     // Store the stock pointers into the Group objects according to surprise value
     map<string,Stock*>::iterator Stocksitr;
+    map<string,Stock*>::iterator Eqtysitr;
     for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++)
     {
         if((Stocksitr->second)->getSurprise()>Thres2){
@@ -201,27 +196,11 @@ int main(int argc, const char * argv[]) {
                 cout<<"Please enter the stock symbol:"<<endl;
                 string ticker;
                 cin>>ticker;
-                //Not a stock
-                    if ( poolStocks.find(ticker) == poolStocks.end() ){
-                        // Index
-                        if(ticker=="SPY"){
-                            cout<<endl<<"Date\t\tAdjClose:"<<endl;
-                            PrintMap(Group::indexPtr->GetPriceMap());
-                        }else{cout<< endl<<"Stock not included."<<endl;}
-                            }
-                //Normal stock
-                    else {
-                        Stock* stkptr = poolStocks[ticker];
-                        cout<<"Ticker:"<<stkptr->getTicker()<<endl;
-                        cout<<"Start day: "<<stkptr->getDate_minus_30()<<endl;
-                        cout<<"End day: "<<stkptr->getDetdate_30()<<endl;
-                        cout<<"Announcement date: "<<stkptr->getDatezero()<<endl;
-                        cout<<"Stock Estimated EPS: "<<stkptr->getEstimateEPS()<<endl;
-                        cout<<"Stock actual EPS: "<<stkptr->getActualEPS()<<endl;
-                        cout<<"Surprise:"<<stkptr->getSurprise()<<endl;
-                        cout<<endl<<"Date\tAdjClose:"<<endl;
-                        PrintMap(stkptr->GetPriceMap());
-                        }
+                if ( poolAll.find(ticker) == poolAll.end() ){
+                        cout<< endl<<"Stock not included."<<endl;}
+                else {
+                    poolAll.find(ticker)->second->printInfo();
+                    }
             }
            else if(c == '3' )
                 { //Check if the caculation done.
@@ -336,13 +315,13 @@ int main(int argc, const char * argv[]) {
         
     
         // Free the memory of stocks and SPY index
-        for(Stocksitr=poolStocks.begin();Stocksitr!=poolStocks.end();Stocksitr++){
+    
+        for(Stocksitr =poolStocks.begin();Stocksitr!= poolStocks.end();Stocksitr++){
             delete Stocksitr->second;
             Stocksitr->second = NULL;
         }
-        poolStocks.clear();
         delete Group::indexPtr;
         Group::indexPtr = NULL;
-        poolAll.clear();
+        poolStocks.clear();poolAll.clear();
     }
 
